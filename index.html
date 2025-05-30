@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,12 +17,8 @@
       color: #eee;
       background-color: #121212;
       line-height: 1.6;
-    }
-    h1 {
-      border-bottom: 3px solid #bb86fc;
-      padding-bottom: 12px;
-      color: #bb86fc;
-      font-weight: 700;
+      position: relative;
+      /* Removed padding-top because text is now in normal flow */
     }
     h2 {
       color: #bb86fc;
@@ -66,33 +64,83 @@
         padding: 15px;
       }
     }
+    /* Animated text now scrolls normally */
+    #text {
+      font-size: 3.5rem;
+      user-select: none;
+      white-space: nowrap;
+      font-weight: 700;
+      color: #bb86fc;
+      margin-bottom: 20px;
+    }
+    #text span {
+      display: inline-block;
+      transition: transform 0.5s ease;
+      cursor: default;
+    }
+    /* Car remains fixed */
+    #car {
+      position: fixed;
+      width: 60px;
+      height: 30px;
+      bottom: 20px;
+      left: 20px;
+      background: #bb86fc;
+      border-radius: 10px;
+      z-index: 1001;
+      box-shadow: 0 0 10px #bb86fc;
+      user-select: none;
+      pointer-events: none;
+    }
+    /* Fun Mode Button */
+    #funModeBtn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background-color: #3700b3;
+      color: #eee;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 1100;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    #funModeBtn:hover {
+      background-color: #6200ee;
+    }
   </style>
 </head>
 <body>
-  <h1>Ian Ryan Smith</h1>
-  <p>Motivated and adaptable professional with a background in digital marketing, recruitment, and sales actively trying to pivot to cyber security. Exploring technology and applying skills through projects and certifications.</p>
-  
+
+  <button id="funModeBtn">Fun Mode: ON</button>
+
+  <div id="text">Ian Ryan Smith - Portfolio</div>
+
+  <p>
+    Motivated and adaptable professional with a background in digital marketing, recruitment, and sales actively trying to pivot to cyber security. Exploring technology and applying skills through projects and certifications.
+  </p>
+
   <section>
     <h2>View My CV</h2>
     <ul>
       <li><a href="https://docs.google.com/document/d/17sufq0eM3QovPwR0BcW_YN1xdxzJYsTGO_HJaNaaT5g/edit?usp=sharing" target="_blank" rel="noopener">Click Here To View</a></li>
-      <!-- this links to google docs -->
     </ul>
   </section>
-  
+
   <section>
     <h2>Projects & Code</h2>
     <ul>
       <li><a href="https://github.com/illestonline" target="_blank" rel="noopener">My GitHub Profile</a></li>
-      <!-- Add more project links here -->
     </ul>
   </section>
-  
+
   <section>
     <h2>Online Learning & Certificates</h2>
     <ul>
       <li><a href="https://github.com/Illestonline/networking-notes/blob/main/Certifications.md" target="_blank" rel="noopener">View My Certificates</a></li>
-      <!-- Add more certificate links here -->
     </ul>
   </section>
 
@@ -103,6 +151,148 @@
       <li>LinkedIn: <a href="https://www.linkedin.com/in/ian-smith-283410bb/" target="_blank" rel="noopener">Click Here To View</a></li>
     </ul>
   </section>
+
+  <div id="car"></div>
+
+  <script>
+    const car = document.getElementById('car');
+    const text = document.getElementById('text');
+    const funModeBtn = document.getElementById('funModeBtn');
+
+    let letters = [];
+    let funModeOn = true;
+    let animationFrameId;
+
+    function wrapLetters() {
+      const content = text.textContent;
+      text.textContent = '';
+      for (let char of content) {
+        const span = document.createElement('span');
+        span.textContent = char;
+        text.appendChild(span);
+        letters.push(span);
+      }
+    }
+    wrapLetters();
+
+    let carPos = { x: 20, y: window.innerHeight - 70 };
+    let speed = 3;
+    let velocity = { x: 0, y: 0 };
+    let currentDir = null;
+    let speedDoubled = false;
+
+    const directions = {
+      ArrowLeft: { x: -1, y: 0, opposite: 'ArrowRight' },
+      ArrowRight: { x: 1, y: 0, opposite: 'ArrowLeft' },
+      ArrowUp: { x: 0, y: -1, opposite: 'ArrowDown' },
+      ArrowDown: { x: 0, y: 1, opposite: 'ArrowUp' }
+    };
+
+    function rectsOverlap(r1, r2) {
+      return !(r2.left > r1.right || r2.right < r1.left || r2.top > r1.bottom || r2.bottom < r1.top);
+    }
+
+    function knockOverLetter(letter, impactX, impactY, force) {
+      if (letter.dataset.knocked === 'true') return;
+      letter.dataset.knocked = 'true';
+
+      let moveX = (impactX > 0 ? 1 : -1) * 40 * force;
+      let moveY = (impactY > 0 ? 1 : -1) * 40 * force;
+      let rotate = (impactX !== 0 ? moveX : moveY) * 0.5;
+
+      letter.style.transition = 'transform 0.3s ease';
+      letter.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${rotate}deg)`;
+
+      setTimeout(() => {
+        letter.style.transform = 'translate(0, 0) rotate(0)';
+        setTimeout(() => {
+          letter.dataset.knocked = 'false';
+        }, 500);
+      }, 1500);
+    }
+
+    function update() {
+      if (!funModeOn) return;
+
+      carPos.x += velocity.x;
+      carPos.y += velocity.y;
+
+      // Constrain car inside viewport
+      carPos.x = Math.max(0, Math.min(window.innerWidth - car.offsetWidth, carPos.x));
+      carPos.y = Math.max(0, Math.min(window.innerHeight - car.offsetHeight, carPos.y));
+
+      car.style.left = carPos.x + 'px';
+      car.style.top = carPos.y + 'px';
+
+      const carRect = car.getBoundingClientRect();
+
+      letters.forEach(letter => {
+        const letterRect = letter.getBoundingClientRect();
+        if (rectsOverlap(carRect, letterRect)) {
+          const dx = letterRect.left + letterRect.width / 2 - (carRect.left + carRect.width / 2);
+          const dy = letterRect.top + letterRect.height / 2 - (carRect.top + carRect.height / 2);
+          knockOverLetter(letter, dx, dy, speedDoubled ? 2 : 1);
+        }
+      });
+
+      animationFrameId = requestAnimationFrame(update);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (!funModeOn) return;
+      if (!directions[e.key]) return;
+
+      if (currentDir === e.key) {
+        if (!speedDoubled) {
+          speed *= 2;
+          speedDoubled = true;
+          velocity.x = directions[e.key].x * speed;
+          velocity.y = directions[e.key].y * speed;
+        }
+        return;
+      }
+
+      if (currentDir === directions[e.key].opposite) {
+        velocity.x = 0;
+        velocity.y = 0;
+        currentDir = null;
+        speed = 3;
+        speedDoubled = false;
+        return;
+      }
+
+      currentDir = e.key;
+      speed = 3;
+      speedDoubled = false;
+      velocity.x = directions[e.key].x * speed;
+      velocity.y = directions[e.key].y * speed;
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (currentDir === e.key) {
+        velocity.x = 0;
+        velocity.y = 0;
+        currentDir = null;
+        speed = 3;
+        speedDoubled = false;
+      }
+    });
+
+    funModeBtn.addEventListener('click', () => {
+      funModeOn = !funModeOn;
+      funModeBtn.textContent = 'Fun Mode: ' + (funModeOn ? 'ON' : 'OFF');
+      if (funModeOn) {
+        update();
+      } else {
+        velocity.x = 0;
+        velocity.y = 0;
+        currentDir = null;
+        speed = 3;
+        speedDoubled = false;
+      }
+    });
+
+    update();
+  </script>
 </body>
 </html>
-
