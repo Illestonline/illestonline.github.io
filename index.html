@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,7 +101,7 @@
       transition: opacity 0.3s ease-out, color 0.3s ease-out, text-shadow 0.3s ease-out;
     }
     
-    /* Car - smaller on mobile */
+    /* Car - much larger on mobile */
     #car {
       position: fixed;
       width: 80px;
@@ -286,7 +287,7 @@
       color: #eee;
     }
 
-    /* Fun Mode Button */
+    /* Fun Mode Button - Enhanced for mobile */
     #funModeBtn {
       position: fixed;
       top: 10px;
@@ -294,15 +295,20 @@
       background-color: #3700b3;
       color: #eee;
       border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 12px 16px;
+      border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
       z-index: 1100;
       user-select: none;
       transition: background-color 0.3s ease;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       touch-action: manipulation;
+      min-height: 48px;
+      min-width: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     #funModeBtn:hover {
@@ -336,11 +342,12 @@
         font-size: 1rem;
       }
       
+      /* Make car much larger on mobile - 3x the original size */
       #car {
-        width: 60px;
-        height: 30px;
-        font-size: 30px;
-        line-height: 30px;
+        width: 180px;
+        height: 120px;
+        font-size: 120px;
+        line-height: 120px;
       }
       
       .enemy {
@@ -366,9 +373,13 @@
         font-size: 1.5rem;
       }
       
+      /* Enhanced mobile button styling */
       #funModeBtn {
-        font-size: 0.75rem;
-        padding: 6px 10px;
+        font-size: 0.85rem;
+        padding: 14px 18px;
+        min-height: 52px;
+        min-width: 130px;
+        border-radius: 10px;
       }
     }
     
@@ -386,11 +397,12 @@
         padding: 12px;
       }
       
+      /* Even larger car for extra small screens */
       #car {
-        width: 50px;
-        height: 25px;
-        font-size: 25px;
-        line-height: 25px;
+        width: 150px;
+        height: 100px;
+        font-size: 100px;
+        line-height: 100px;
         bottom: 15px;
         left: 15px;
       }
@@ -399,30 +411,37 @@
         font-size: 0.8rem;
       }
       
+      /* Maximum touch-friendly button on small screens */
       #funModeBtn {
-        font-size: 0.7rem;
-        padding: 5px 8px;
+        font-size: 0.8rem;
+        padding: 16px 20px;
+        min-height: 56px;
+        min-width: 140px;
+        border-radius: 12px;
       }
     }
     
     /* Touch-friendly improvements */
     @media (pointer: coarse) {
       a {
-        padding: 5px 0;
+        padding: 8px 0;
         display: inline-block;
       }
       
+      /* Ensure button is always touch-friendly */
       #funModeBtn {
-        min-height: 44px;
-        min-width: 44px;
+        min-height: 48px;
+        min-width: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-weight: 700;
       }
       
       #restartBtn {
-        min-height: 44px;
-        padding: 12px 30px;
+        min-height: 48px;
+        padding: 14px 32px;
+        font-size: 1.1rem;
       }
     }
     
@@ -444,6 +463,10 @@
       }
       
       #car {
+        width: 120px;
+        height: 80px;
+        font-size: 80px;
+        line-height: 80px;
         bottom: 10px;
         left: 10px;
       }
@@ -456,6 +479,8 @@
       #funModeBtn {
         top: 5px;
         right: 5px;
+        min-height: 44px;
+        padding: 12px 16px;
       }
     }
   </style>
@@ -515,6 +540,7 @@
 
   <!-- Car now displays a bigger little monster -->
   <div id="car">👾</div>
+
 
   <script>
     const car = document.getElementById('car');
