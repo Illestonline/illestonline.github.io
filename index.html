@@ -1,90 +1,97 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ian Ryan Smith - Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: 'Roboto', Arial, sans-serif;
       max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
+      margin: 20px auto;
+      padding: 15px;
       color: #eee;
       background-color: #121212;
       line-height: 1.6;
       position: relative;
     }
+    
     h2 {
       color: #bb86fc;
-      margin-top: 40px;
+      margin-top: 30px;
       border-bottom: 2px solid #333;
       padding-bottom: 6px;
-      user-select: none; /* prevent text selection while interacting */
-      white-space: nowrap; /* keep letters inline and no wrapping */
+      user-select: none;
+      white-space: nowrap;
+      font-size: 1.5rem;
     }
+    
     section {
       background-color: #1e1e1e;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(187, 134, 252, 0.3);
-      margin-top: 30px;
+      margin-top: 20px;
     }
+    
     a {
       color: #bb86fc;
       text-decoration: none;
       font-weight: 500;
       transition: color 0.3s ease;
+      word-break: break-word;
     }
+    
     a:hover,
     a:focus {
       color: #3700b3;
       text-decoration: underline;
     }
+    
     ul {
       list-style: none;
       padding-left: 0;
     }
+    
     li {
       margin-bottom: 12px;
     }
+    
     p {
       font-size: 1.1rem;
       margin-top: 10px;
     }
-    @media (max-width: 600px) {
-      body {
-        margin: 20px 15px;
-        padding: 15px;
-      }
-      section {
-        padding: 15px;
-      }
-    }
-    /* Animated text now scrolls normally */
+    
+    /* Main header */
     #text {
-      font-size: 3.5rem;
+      font-size: 2.5rem;
       user-select: none;
       white-space: nowrap;
       font-weight: 700;
       color: #bb86fc;
       margin-bottom: 20px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 5px;
     }
+    
     #text span,
     h2 span {
       display: inline-block;
       transition: transform 0.1s ease-in-out;
       cursor: default;
     }
-    /* Fix for space spans - make them visible */
+    
     #text span.space,
     h2 span.space {
-      width: 0.3em; /* Give spaces a visible width */
+      width: 0.3em;
     }
     
-    /* Destroyed letter style - fades out with red glow */
     #text span.destroyed,
     h2 span.destroyed {
       opacity: 0;
@@ -93,44 +100,29 @@
       transition: opacity 0.3s ease-out, color 0.3s ease-out, text-shadow 0.3s ease-out;
     }
     
-    /* Car is hidden by default - EVEN BIGGER! */
+    /* Car - smaller on mobile */
     #car {
       position: fixed;
-      width: 135px;
-      height: 67px;
+      width: 80px;
+      height: 40px;
       bottom: 20px;
       left: 20px;
-      background: #bb86fc;
+      background: transparent;
       border-radius: 10px;
       z-index: 1001;
-      box-shadow: 0 0 10px #bb86fc;
       user-select: none;
       pointer-events: none;
-      display: none; /* Hidden by default */
-      
-      /* Option 1: Use an emoji as the car - EVEN BIGGER SIZE */
-      background: transparent;
-      font-size: 67px;
-      line-height: 67px;
+      display: none;
+      font-size: 40px;
+      line-height: 40px;
       text-align: center;
-      box-shadow: none;
     }
     
-    /* Option 2: If you want to use a custom image instead of emoji */
-    #car.custom-image {
-      /* Uncomment these lines and add your image URL */
-      /* background-image: url('your-car-image.png'); */
-      /* background-size: contain; */
-      /* background-repeat: no-repeat; */
-      /* background-position: center; */
-      background: transparent;
-    }
-    
-    /* Enemies */
+    /* Enemies - smaller on mobile */
     .enemy {
       position: fixed;
-      width: 20px;
-      height: 20px;
+      width: 15px;
+      height: 15px;
       background: #ff4444;
       border-radius: 50%;
       z-index: 1000;
@@ -139,11 +131,10 @@
       pointer-events: none;
     }
     
-    /* Special Enemy - 50% smaller and more dramatic pulse */
     .special-enemy {
       position: fixed;
-      width: 7.5px;
-      height: 7.5px;
+      width: 6px;
+      height: 6px;
       background: #ffaa00;
       border-radius: 50%;
       z-index: 1000;
@@ -164,11 +155,10 @@
       }
     }
 
-    /* Boss Enemy - Blue strobe effect */
     .boss-enemy {
       position: fixed;
-      width: 25px;
-      height: 25px;
+      width: 18px;
+      height: 18px;
       background: #0066ff;
       border-radius: 50%;
       z-index: 1000;
@@ -196,11 +186,10 @@
       }
     }
 
-    /* Particle Trail */
     .particle {
       position: fixed;
-      width: 4px;
-      height: 4px;
+      width: 3px;
+      height: 3px;
       background: #bb86fc;
       border-radius: 50%;
       z-index: 999;
@@ -224,13 +213,14 @@
     /* Game UI */
     #gameUI {
       position: fixed;
-      top: 15px;
-      left: 15px;
+      top: 10px;
+      left: 10px;
       color: #eee;
       font-weight: 600;
       z-index: 1100;
       user-select: none;
-      display: none; /* Hidden by default */
+      display: none;
+      font-size: 0.9rem;
     }
 
     #score {
@@ -251,28 +241,31 @@
       align-items: center;
       z-index: 2000;
       user-select: none;
+      padding: 20px;
     }
 
     #gameOverContent {
       text-align: center;
       color: #eee;
       background: #1e1e1e;
-      padding: 40px;
+      padding: 30px 20px;
       border-radius: 12px;
       border: 2px solid #ff4444;
       box-shadow: 0 0 30px rgba(255, 68, 68, 0.5);
+      max-width: 90%;
+      width: 400px;
     }
 
     #gameOverContent h1 {
       color: #ff4444;
-      font-size: 3rem;
-      margin-bottom: 20px;
+      font-size: 2rem;
+      margin-bottom: 15px;
       text-shadow: 0 0 15px #ff4444;
     }
 
     #gameOverContent p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
+      font-size: 1rem;
+      margin-bottom: 20px;
     }
 
     #restartBtn {
@@ -282,9 +275,10 @@
       padding: 12px 25px;
       border-radius: 8px;
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 1rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      touch-action: manipulation;
     }
 
     #restartBtn:hover {
@@ -295,21 +289,174 @@
     /* Fun Mode Button */
     #funModeBtn {
       position: fixed;
-      top: 15px;
-      right: 15px;
+      top: 10px;
+      right: 10px;
       background-color: #3700b3;
       color: #eee;
       border: none;
-      padding: 8px 15px;
+      padding: 8px 12px;
       border-radius: 6px;
       font-weight: 600;
       cursor: pointer;
       z-index: 1100;
       user-select: none;
       transition: background-color 0.3s ease;
+      font-size: 0.85rem;
+      touch-action: manipulation;
     }
+    
     #funModeBtn:hover {
       background-color: #6200ee;
+    }
+    
+    /* Mobile-specific styles */
+    @media (max-width: 768px) {
+      body {
+        margin: 10px;
+        padding: 10px;
+      }
+      
+      #text {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+        margin-top: 25px;
+        white-space: normal; /* Allow wrapping on very small screens */
+      }
+      
+      section {
+        padding: 15px;
+        margin-top: 15px;
+      }
+      
+      p {
+        font-size: 1rem;
+      }
+      
+      #car {
+        width: 60px;
+        height: 30px;
+        font-size: 30px;
+        line-height: 30px;
+      }
+      
+      .enemy {
+        width: 12px;
+        height: 12px;
+      }
+      
+      .special-enemy {
+        width: 5px;
+        height: 5px;
+      }
+      
+      .boss-enemy {
+        width: 15px;
+        height: 15px;
+      }
+      
+      #gameOverContent {
+        padding: 20px 15px;
+      }
+      
+      #gameOverContent h1 {
+        font-size: 1.5rem;
+      }
+      
+      #funModeBtn {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+      }
+    }
+    
+    /* Extra small screens */
+    @media (max-width: 480px) {
+      #text {
+        font-size: 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1.2rem;
+      }
+      
+      section {
+        padding: 12px;
+      }
+      
+      #car {
+        width: 50px;
+        height: 25px;
+        font-size: 25px;
+        line-height: 25px;
+        bottom: 15px;
+        left: 15px;
+      }
+      
+      #gameUI {
+        font-size: 0.8rem;
+      }
+      
+      #funModeBtn {
+        font-size: 0.7rem;
+        padding: 5px 8px;
+      }
+    }
+    
+    /* Touch-friendly improvements */
+    @media (pointer: coarse) {
+      a {
+        padding: 5px 0;
+        display: inline-block;
+      }
+      
+      #funModeBtn {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      #restartBtn {
+        min-height: 44px;
+        padding: 12px 30px;
+      }
+    }
+    
+    /* Landscape orientation on mobile */
+    @media (max-width: 768px) and (orientation: landscape) {
+      body {
+        margin: 5px;
+        padding: 5px;
+      }
+      
+      #text {
+        font-size: 1.6rem;
+        margin-bottom: 10px;
+      }
+      
+      section {
+        padding: 10px;
+        margin-top: 10px;
+      }
+      
+      #car {
+        bottom: 10px;
+        left: 10px;
+      }
+      
+      #gameUI {
+        top: 5px;
+        left: 5px;
+      }
+      
+      #funModeBtn {
+        top: 5px;
+        right: 5px;
+      }
     }
   </style>
 </head>
@@ -369,7 +516,7 @@
   <!-- Car now displays a bigger little monster -->
   <div id="car">👾</div>
 
- <script>
+  <script>
     const car = document.getElementById('car');
 const text = document.getElementById('text');
 const funModeBtn = document.getElementById('funModeBtn');
@@ -436,6 +583,11 @@ let isMouseMoving = false;
 let mouseMovementTimer = 0;
 let mouseMomentumDecay = 0.95; // How quickly momentum fades (0.95 = 5% decay per frame)
 let minMomentum = 0.1; // Minimum momentum before stopping
+
+// Touch support variables
+let touchStartPos = { x: 0, y: 0 };
+let touchCurrentPos = { x: 0, y: 0 };
+let isTouching = false;
 
 // Directions object for arrow keys
 const directions = {
@@ -681,7 +833,7 @@ function knockOverLetter(letter, impactX, impactY, force, hitByEnemy = false) {
   }, 100);
 }
 
-// Calculate normalized velocity for movement (updated for momentum-based mouse control)
+// Calculate normalized velocity for movement (updated for momentum-based mouse control and touch)
 function updateVelocity() {
   let dirX = 0;
   let dirY = 0;
@@ -693,18 +845,29 @@ function updateVelocity() {
   if (keysPressed.has('ArrowUp')) { dirY -= 1; usingKeyboard = true; }
   if (keysPressed.has('ArrowDown')) { dirY += 1; usingKeyboard = true; }
   
-  // If no keyboard input, use mouse control with momentum
+  // If no keyboard input, check for touch or mouse control
   if (!usingKeyboard) {
     const carCenterX = carPos.x + car.offsetWidth / 2;
     const carCenterY = carPos.y + car.offsetHeight / 2;
     
-    if (isMouseMoving && mouseMovementTimer > 0) {
-      // Mouse is actively moving - calculate direction to mouse
-      const dx = mousePos.x - carCenterX;
-      const dy = mousePos.y - carCenterY;
+    let targetX, targetY;
+    
+    if (isTouching) {
+      // Touch control - use touch position
+      targetX = touchCurrentPos.x;
+      targetY = touchCurrentPos.y;
+    } else if (isMouseMoving && mouseMovementTimer > 0) {
+      // Mouse control - use mouse position
+      targetX = mousePos.x;
+      targetY = mousePos.y;
+    }
+    
+    if (targetX !== undefined && targetY !== undefined) {
+      const dx = targetX - carCenterX;
+      const dy = targetY - carCenterY;
       const distance = Math.sqrt(dx * dx + dy * dy);
       
-      // Only move if mouse is more than 10 pixels away (dead zone)
+      // Only move if target is more than 10 pixels away (dead zone)
       if (distance > 10) {
         dirX = dx / distance;
         dirY = dy / distance;
@@ -714,29 +877,33 @@ function updateVelocity() {
         dirX *= speedScale;
         dirY *= speedScale;
         
-        // Update mouse velocity for momentum
-        mouseVelocity.x = dirX;
-        mouseVelocity.y = dirY;
+        // Update mouse velocity for momentum (only for mouse, not touch)
+        if (!isTouching) {
+          mouseVelocity.x = dirX;
+          mouseVelocity.y = dirY;
+        }
       }
     }
     
-    // Always check for momentum, regardless of mouse state
-    const momentumMagnitude = Math.sqrt(mouseVelocity.x * mouseVelocity.x + mouseVelocity.y * mouseVelocity.y);
-    
-    if (momentumMagnitude > minMomentum) {
-      // Use momentum if we have it
-      if (!isMouseMoving || mouseMovementTimer <= 0) {
-        dirX = mouseVelocity.x;
-        dirY = mouseVelocity.y;
-      }
+    // Check for momentum (only when not touching)
+    if (!isTouching) {
+      const momentumMagnitude = Math.sqrt(mouseVelocity.x * mouseVelocity.x + mouseVelocity.y * mouseVelocity.y);
       
-      // Always apply decay to momentum
-      mouseVelocity.x *= mouseMomentumDecay;
-      mouseVelocity.y *= mouseMomentumDecay;
-    } else {
-      // Stop momentum when it gets too small
-      mouseVelocity.x = 0;
-      mouseVelocity.y = 0;
+      if (momentumMagnitude > minMomentum) {
+        // Use momentum if we have it and no active input
+        if (!isMouseMoving || mouseMovementTimer <= 0) {
+          dirX = mouseVelocity.x;
+          dirY = mouseVelocity.y;
+        }
+        
+        // Always apply decay to momentum
+        mouseVelocity.x *= mouseMomentumDecay;
+        mouseVelocity.y *= mouseMomentumDecay;
+      } else {
+        // Stop momentum when it gets too small
+        mouseVelocity.x = 0;
+        mouseVelocity.y = 0;
+      }
     }
   } else {
     // Reset mouse momentum when using keyboard
@@ -810,6 +977,9 @@ function resetGame() {
   mouseVelocity.x = 0;
   mouseVelocity.y = 0;
   
+  // Reset touch state
+  isTouching = false;
+  
   // Reset car position
   carPos.x = 20;
   carPos.y = window.innerHeight - 70;
@@ -832,7 +1002,7 @@ function update() {
     }
   }
 
-  // Update velocity based on current input (keyboard or mouse with momentum)
+  // Update velocity based on current input (keyboard, mouse with momentum, or touch)
   updateVelocity();
 
   carPos.x += velocity.x;
@@ -925,6 +1095,35 @@ function update() {
 
   animationFrameId = requestAnimationFrame(update);
 }
+
+// Touch event listeners
+window.addEventListener('touchstart', (e) => {
+  if (!funModeOn) return;
+  e.preventDefault();
+  
+  const touch = e.touches[0];
+  touchStartPos.x = touch.clientX;
+  touchStartPos.y = touch.clientY;
+  touchCurrentPos.x = touch.clientX;
+  touchCurrentPos.y = touch.clientY;
+  isTouching = true;
+}, { passive: false });
+
+window.addEventListener('touchmove', (e) => {
+  if (!funModeOn || !isTouching) return;
+  e.preventDefault();
+  
+  const touch = e.touches[0];
+  touchCurrentPos.x = touch.clientX;
+  touchCurrentPos.y = touch.clientY;
+}, { passive: false });
+
+window.addEventListener('touchend', (e) => {
+  if (!funModeOn) return;
+  e.preventDefault();
+  
+  isTouching = false;
+}, { passive: false });
 
 // Mouse event listeners with momentum tracking
 window.addEventListener('mousemove', (e) => {
