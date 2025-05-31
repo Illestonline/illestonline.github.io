@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,11 +83,11 @@
     h2 span.space {
       width: 0.3em; /* Give spaces a visible width */
     }
-    /* Car remains fixed */
+    /* Car is hidden by default - EVEN BIGGER! */
     #car {
       position: fixed;
-      width: 60px;
-      height: 30px;
+      width: 135px;
+      height: 67px;
       bottom: 20px;
       left: 20px;
       background: #bb86fc;
@@ -95,7 +96,26 @@
       box-shadow: 0 0 10px #bb86fc;
       user-select: none;
       pointer-events: none;
+      display: none; /* Hidden by default */
+      
+      /* Option 1: Use an emoji as the car - EVEN BIGGER SIZE */
+      background: transparent;
+      font-size: 67px;
+      line-height: 67px;
+      text-align: center;
+      box-shadow: none;
     }
+    
+    /* Option 2: If you want to use a custom image instead of emoji */
+    #car.custom-image {
+      /* Uncomment these lines and add your image URL */
+      /* background-image: url('your-car-image.png'); */
+      /* background-size: contain; */
+      /* background-repeat: no-repeat; */
+      /* background-position: center; */
+      background: transparent;
+    }
+    
     /* Enemies */
     .enemy {
       position: fixed;
@@ -247,7 +267,8 @@
     </ul>
   </section>
 
-  <div id="car"></div>
+  <!-- Car now displays a bigger little monster -->
+  <div id="car">👾</div>
 
   <script>
     const car = document.getElementById('car');
@@ -322,15 +343,21 @@
         enemyType = 'special';
       }
       
+      // Calculate content area width (like the section boxes)
+      const contentWidth = 800; // max-width of body
+      const screenWidth = window.innerWidth;
+      const availableWidth = Math.min(contentWidth, screenWidth - 40); // Account for margins
+      const leftMargin = (screenWidth - availableWidth) / 2;
+      
       if (enemyType === 'boss') {
         enemy.className = 'boss-enemy';
-        enemy.style.left = Math.random() * (window.innerWidth - 25) + 'px';
+        enemy.style.left = (leftMargin + Math.random() * (availableWidth - 25)) + 'px';
       } else if (enemyType === 'special') {
         enemy.className = 'special-enemy';
-        enemy.style.left = Math.random() * (window.innerWidth - 7.5) + 'px';
+        enemy.style.left = (leftMargin + Math.random() * (availableWidth - 7.5)) + 'px';
       } else {
         enemy.className = 'enemy';
-        enemy.style.left = Math.random() * (window.innerWidth - 20) + 'px';
+        enemy.style.left = (leftMargin + Math.random() * (availableWidth - 20)) + 'px';
       }
       
       enemy.style.top = '-30px';
@@ -605,10 +632,12 @@
       if (funModeOn) {
         funModeBtn.textContent = 'Exit Fun Mode';
         gameUI.style.display = 'block'; // Show game UI
+        car.style.display = 'block'; // Show the car
         animationFrameId = requestAnimationFrame(update);
       } else {
         funModeBtn.textContent = 'Enter Fun Mode';
         gameUI.style.display = 'none'; // Hide game UI
+        car.style.display = 'none'; // Hide the car
         cancelAnimationFrame(animationFrameId);
         // Reset all letters transform and knocked flag
         letters.forEach(letter => {
