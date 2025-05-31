@@ -7,120 +7,118 @@
   <title>Ian Ryan Smith - Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: 'Roboto', Arial, sans-serif;
       max-width: 800px;
-      margin: 40px auto;
+      margin: 0 auto;
       padding: 20px;
       color: #eee;
       background-color: #121212;
       line-height: 1.6;
       position: relative;
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+      min-height: 100vh;
     }
+    
     h2 {
       color: #bb86fc;
       margin-top: 40px;
       border-bottom: 2px solid #333;
       padding-bottom: 6px;
-      user-select: none; /* prevent text selection while interacting */
-      white-space: nowrap; /* keep letters inline and no wrapping */
+      user-select: none;
+      white-space: nowrap;
+      overflow: hidden; /* Prevent text overflow */
+      font-size: clamp(1.2rem, 4vw, 1.5rem); /* Responsive font size */
     }
+    
     section {
       background-color: #1e1e1e;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(187, 134, 252, 0.3);
       margin-top: 30px;
+      width: 100%;
     }
+    
     a {
       color: #bb86fc;
       text-decoration: none;
       font-weight: 500;
       transition: color 0.3s ease;
+      word-break: break-word; /* Prevent long links from overflowing */
     }
+    
     a:hover,
     a:focus {
       color: #3700b3;
       text-decoration: underline;
     }
+    
     ul {
       list-style: none;
       padding-left: 0;
     }
+    
     li {
       margin-bottom: 12px;
     }
+    
     p {
-      font-size: 1.1rem;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
       margin-top: 10px;
     }
-    @media (max-width: 600px) {
-      body {
-        margin: 20px 15px;
-        padding: 15px;
-      }
-      section {
-        padding: 15px;
-      }
-    }
-    /* Animated text now scrolls normally */
+    
+    /* Main title - responsive sizing */
     #text {
-      font-size: 3.5rem;
+      font-size: clamp(2rem, 8vw, 3.5rem);
       user-select: none;
       white-space: nowrap;
       font-weight: 700;
       color: #bb86fc;
       margin-bottom: 20px;
+      overflow: hidden; /* Prevent overflow */
     }
+    
     #text span,
     h2 span {
       display: inline-block;
       transition: transform 0.1s ease-in-out;
       cursor: default;
     }
-    /* Fix for space spans - make them visible */
+    
     #text span.space,
     h2 span.space {
-      width: 0.3em; /* Give spaces a visible width */
+      width: 0.3em;
     }
-    /* Car is hidden by default - EVEN BIGGER! */
+    
+    /* Car - responsive sizing */
     #car {
       position: fixed;
-      width: 135px;
-      height: 67px;
+      width: clamp(50px, 15vw, 135px);
+      height: clamp(25px, 7.5vw, 67px);
       bottom: 20px;
       left: 20px;
-      background: #bb86fc;
+      background: transparent;
       border-radius: 10px;
       z-index: 1001;
-      box-shadow: 0 0 10px #bb86fc;
       user-select: none;
       pointer-events: none;
-      display: none; /* Hidden by default */
-      
-      /* Option 1: Use an emoji as the car - EVEN BIGGER SIZE */
-      background: transparent;
-      font-size: 67px;
-      line-height: 67px;
+      display: none;
+      font-size: clamp(25px, 7.5vw, 67px);
+      line-height: 1;
       text-align: center;
-      box-shadow: none;
+      touch-action: none; /* Prevent default touch actions */
     }
     
-    /* Option 2: If you want to use a custom image instead of emoji */
-    #car.custom-image {
-      /* Uncomment these lines and add your image URL */
-      /* background-image: url('your-car-image.png'); */
-      /* background-size: contain; */
-      /* background-repeat: no-repeat; */
-      /* background-position: center; */
-      background: transparent;
-    }
-    
-    /* Enemies */
+    /* Enemies - responsive sizing */
     .enemy {
       position: fixed;
-      width: 20px;
-      height: 20px;
+      width: clamp(15px, 4vw, 20px);
+      height: clamp(15px, 4vw, 20px);
       background: #ff4444;
       border-radius: 50%;
       z-index: 1000;
@@ -129,11 +127,10 @@
       pointer-events: none;
     }
     
-    /* Special Enemy - 50% smaller and more dramatic pulse */
     .special-enemy {
       position: fixed;
-      width: 7.5px;
-      height: 7.5px;
+      width: clamp(6px, 1.5vw, 7.5px);
+      height: clamp(6px, 1.5vw, 7.5px);
       background: #ffaa00;
       border-radius: 50%;
       z-index: 1000;
@@ -154,11 +151,10 @@
       }
     }
 
-    /* Boss Enemy - Blue strobe effect */
     .boss-enemy {
       position: fixed;
-      width: 25px;
-      height: 25px;
+      width: clamp(18px, 5vw, 25px);
+      height: clamp(18px, 5vw, 25px);
       background: #0066ff;
       border-radius: 50%;
       z-index: 1000;
@@ -186,7 +182,7 @@
       }
     }
 
-    /* Game UI */
+    /* Game UI - responsive positioning */
     #gameUI {
       position: fixed;
       top: 15px;
@@ -195,7 +191,8 @@
       font-weight: 600;
       z-index: 1100;
       user-select: none;
-      display: none; /* Hidden by default */
+      display: none;
+      font-size: clamp(0.9rem, 3vw, 1rem);
     }
 
     #score {
@@ -203,7 +200,7 @@
       color: #bb86fc;
     }
 
-    /* Fun Mode Button */
+    /* Fun Mode Button - responsive */
     #funModeBtn {
       position: fixed;
       top: 15px;
@@ -211,16 +208,113 @@
       background-color: #3700b3;
       color: #eee;
       border: none;
-      padding: 8px 15px;
+      padding: clamp(6px, 2vw, 8px) clamp(10px, 3vw, 15px);
       border-radius: 6px;
       font-weight: 600;
       cursor: pointer;
       z-index: 1100;
       user-select: none;
       transition: background-color 0.3s ease;
+      font-size: clamp(0.8rem, 2.5vw, 1rem);
     }
+    
     #funModeBtn:hover {
       background-color: #6200ee;
+    }
+
+    /* Touch controls for mobile */
+    #touchControls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1100;
+      opacity: 0.7;
+    }
+
+    .touch-btn {
+      background-color: rgba(187, 134, 252, 0.3);
+      border: 2px solid #bb86fc;
+      color: #eee;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    .touch-btn:active {
+      background-color: rgba(187, 134, 252, 0.6);
+      transform: scale(0.95);
+    }
+
+    .touch-btn-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    /* Instructions for mobile */
+    #mobileInstructions {
+      position: fixed;
+      bottom: 80px;
+      left: 15px;
+      right: 15px;
+      background-color: rgba(30, 30, 30, 0.9);
+      color: #eee;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      text-align: center;
+      z-index: 1100;
+      display: none;
+    }
+
+    /* Tablet and mobile specific adjustments */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px 10px;
+      }
+      
+      section {
+        padding: 15px;
+        margin-top: 20px;
+      }
+      
+      #text {
+        margin-bottom: 15px;
+      }
+      
+      h2 {
+        margin-top: 25px;
+        font-size: clamp(1.1rem, 5vw, 1.4rem);
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px 5px;
+      }
+      
+      section {
+        padding: 12px;
+        margin-top: 15px;
+      }
+      
+      #funModeBtn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+      
+      #gameUI {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
@@ -231,6 +325,24 @@
   </div>
 
   <button id="funModeBtn">Enter Fun Mode</button>
+
+  <!-- Touch controls for mobile -->
+  <div id="touchControls">
+    <div class="touch-btn-row">
+      <div class="touch-btn" data-direction="up">↑</div>
+    </div>
+    <div class="touch-btn-row">
+      <div class="touch-btn" data-direction="left">←</div>
+      <div class="touch-btn" data-direction="right">→</div>
+    </div>
+    <div class="touch-btn-row">
+      <div class="touch-btn" data-direction="down">↓</div>
+    </div>
+  </div>
+
+  <div id="mobileInstructions">
+    Drag the monster around to catch enemies! Use arrow buttons or drag to move.
+  </div>
 
   <div id="text">Ian Ryan Smith - Portfolio</div>
 
@@ -267,7 +379,6 @@
     </ul>
   </section>
 
-  <!-- Car now displays a bigger little monster -->
   <div id="car">👾</div>
 
   <script>
@@ -276,6 +387,8 @@
     const funModeBtn = document.getElementById('funModeBtn');
     const gameUI = document.getElementById('gameUI');
     const scoreEl = document.getElementById('score');
+    const touchControls = document.getElementById('touchControls');
+    const mobileInstructions = document.getElementById('mobileInstructions');
 
     let letters = [];
     let enemies = [];
@@ -283,9 +396,16 @@
     let animationFrameId;
     let score = 0;
     let enemySpawnTimer = 0;
-    let enemySpawnRate = 240; // frames between spawns (4 seconds at 60fps)
+    let enemySpawnRate = 240;
+    let isMobile = 'ontouchstart' in window;
 
-    // Wrap letters in #text and all h2 elements
+    // Touch and drag variables
+    let isDragging = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let carStartX = 0;
+    let carStartY = 0;
+
     function wrapLetters(element) {
       const content = element.textContent;
       element.textContent = '';
@@ -293,7 +413,6 @@
       for (let char of content) {
         const span = document.createElement('span');
         span.textContent = char;
-        // Add class for spaces to make them visible
         if (char === ' ') {
           span.classList.add('space');
         }
@@ -303,83 +422,70 @@
       return spans;
     }
 
-    // Wrap main header letters
     letters = wrapLetters(text);
-
-    // Wrap all h2 letters and add to letters array
     const headings = document.querySelectorAll('h2');
     headings.forEach(h2 => {
       const h2Letters = wrapLetters(h2);
       letters = letters.concat(h2Letters);
     });
 
-    // Car position and movement variables
     let carPos = { x: 20, y: window.innerHeight - 70 };
     let speed = 3;
     let velocity = { x: 0, y: 0 };
     let currentDir = null;
     let speedDoubled = false;
 
-    // Directions object for arrow keys
     const directions = {
       ArrowLeft: { x: -1, y: 0, opposite: 'ArrowRight' },
       ArrowRight: { x: 1, y: 0, opposite: 'ArrowLeft' },
       ArrowUp: { x: 0, y: -1, opposite: 'ArrowDown' },
-      ArrowDown: { x: 0, y: 1, opposite: 'ArrowUp' }
+      ArrowDown: { x: 0, y: 1, opposite: 'ArrowUp' },
+      up: { x: 0, y: -1, opposite: 'down' },
+      down: { x: 0, y: 1, opposite: 'up' },
+      left: { x: -1, y: 0, opposite: 'right' },
+      right: { x: 1, y: 0, opposite: 'left' }
     };
 
-    // Enemy management
     function createEnemy() {
       const enemy = document.createElement('div');
       
       let enemyType = 'normal';
       
-      // After 300 points, 10% chance for boss enemy (doubled from 5%)
       if (score >= 300 && Math.random() < 0.10) {
         enemyType = 'boss';
-      }
-      // After 100 points, 30% chance for special enemy (doubled from 15%, if not boss)
-      else if (score >= 100 && Math.random() < 0.30) {
+      } else if (score >= 100 && Math.random() < 0.30) {
         enemyType = 'special';
       }
       
-      // Calculate content area width (like the section boxes)
-      const contentWidth = 800; // max-width of body
       const screenWidth = window.innerWidth;
-      const availableWidth = Math.min(contentWidth, screenWidth - 40); // Account for margins
-      const leftMargin = (screenWidth - availableWidth) / 2;
+      const enemySize = enemyType === 'boss' ? 25 : (enemyType === 'special' ? 7.5 : 20);
       
       if (enemyType === 'boss') {
         enemy.className = 'boss-enemy';
-        enemy.style.left = (leftMargin + Math.random() * (availableWidth - 25)) + 'px';
       } else if (enemyType === 'special') {
         enemy.className = 'special-enemy';
-        enemy.style.left = (leftMargin + Math.random() * (availableWidth - 7.5)) + 'px';
       } else {
         enemy.className = 'enemy';
-        enemy.style.left = (leftMargin + Math.random() * (availableWidth - 20)) + 'px';
       }
       
+      enemy.style.left = (Math.random() * (screenWidth - enemySize)) + 'px';
       enemy.style.top = '-30px';
       document.body.appendChild(enemy);
       
-      // Base enemy speed calculation - reduced by 25%
       let baseSpeed;
       if (score < 150) {
-        baseSpeed = (0.5 + Math.random() * 0.5) * 0.75; // Reduced by 25%: 0.375-0.75
+        baseSpeed = (0.5 + Math.random() * 0.5) * 0.75;
       } else if (score < 400) {
-        const speedMultiplier = 1 + Math.min((score - 150) / 200, 1.5); // Gradually increase after 150 points
-        baseSpeed = (0.8 + Math.random() * 0.7) * speedMultiplier * 0.75; // Reduced by 25%
-      } else {
-        // After 400 points, gradually increase speed again
         const speedMultiplier = 1 + Math.min((score - 150) / 200, 1.5);
-        const bonusSpeedMultiplier = 1 + Math.min((score - 400) / 300, 1.0); // Additional multiplier after 400
-        baseSpeed = (0.8 + Math.random() * 0.7) * speedMultiplier * bonusSpeedMultiplier * 0.75; // Still reduced by 25%
+        baseSpeed = (0.8 + Math.random() * 0.7) * speedMultiplier * 0.75;
+      } else {
+        const speedMultiplier = 1 + Math.min((score - 150) / 200, 1.5);
+        const bonusSpeedMultiplier = 1 + Math.min((score - 400) / 300, 1.0);
+        baseSpeed = (0.8 + Math.random() * 0.7) * speedMultiplier * bonusSpeedMultiplier * 0.75;
       }
       
-      // Boss enemies are slightly faster than special, special enemies are fast
       if (enemyType === 'boss') {
-        baseSpeed *= 2.2; // Only slightly faster than special enemies
+        baseSpeed *= 2.2;
       } else if (enemyType === 'special') {
         baseSpeed *= 2;
       }
@@ -390,44 +496,31 @@
         y: -30,
         speed: baseSpeed,
         type: enemyType,
-        horizontalVelocity: 0, // Add horizontal movement capability
-        lastTextCollision: 0 // Track when enemy last hit text to prevent constant direction changes
+        horizontalVelocity: 0,
+        lastTextCollision: 0
       });
     }
 
     function updateEnemies() {
       enemies.forEach((enemy, index) => {
-        // Update vertical position (always falling)
         enemy.y += enemy.speed;
-        
-        // Update horizontal position
         enemy.x += enemy.horizontalVelocity;
         
-        // Keep enemy within screen bounds horizontally
         if (enemy.x <= 0 || enemy.x >= window.innerWidth - 20) {
-          enemy.horizontalVelocity *= -0.5; // Reverse and reduce horizontal velocity when hitting edges
+          enemy.horizontalVelocity *= -0.5;
         }
         enemy.x = Math.max(0, Math.min(window.innerWidth - 20, enemy.x));
         
-        // Apply positions
         enemy.element.style.top = enemy.y + 'px';
         enemy.element.style.left = enemy.x + 'px';
         
-        // Remove enemies that reached the bottom and decrease score
         if (enemy.y > window.innerHeight) {
           enemy.element.remove();
-          let penalty;
-          if (enemy.type === 'boss') {
-            penalty = -50; // Boss enemies cost 5x more
-          } else if (enemy.type === 'special') {
-            penalty = -30; // Special enemies cost 3x more
-          } else {
-            penalty = -10; // Normal penalty
-          }
+          let penalty = enemy.type === 'boss' ? -50 : (enemy.type === 'special' ? -30 : -10);
           enemies.splice(index, 1);
-          score = Math.max(0, score + penalty); // Add penalty (negative number)
+          score = Math.max(0, score + penalty);
           scoreEl.textContent = 'Score: ' + score;
-          updateSpawnRate(); // Update spawn rate when score decreases
+          updateSpawnRate();
         }
       });
     }
@@ -438,34 +531,24 @@
       enemies.forEach((enemy, index) => {
         const enemyRect = enemy.element.getBoundingClientRect();
         if (rectsOverlap(carRect, enemyRect)) {
-          // Enemy caught! Award points based on enemy type
-          let points;
-          if (enemy.type === 'boss') {
-            points = 50; // Boss enemies worth 5x points
-          } else if (enemy.type === 'special') {
-            points = 30; // Special enemies worth 3x points
-          } else {
-            points = 10; // Normal points
-          }
+          let points = enemy.type === 'boss' ? 50 : (enemy.type === 'special' ? 30 : 10);
           enemy.element.remove();
           enemies.splice(index, 1);
           score += points;
           scoreEl.textContent = 'Score: ' + score;
-          updateSpawnRate(); // Update spawn rate when score increases
+          updateSpawnRate();
         }
       });
     }
 
-    // Update spawn rate based on current score
     function updateSpawnRate() {
       const scoreThreshold = Math.floor(score / 50);
-      let newSpawnRate = Math.max(90, 240 - (scoreThreshold * 20)); // Min 90 frames (1.5 seconds)
+      let newSpawnRate = Math.max(90, 240 - (scoreThreshold * 20));
       
-      // Add bonus enemies every 100 points after 200
       if (score >= 200) {
         const bonusEnemyTiers = Math.floor((score - 200) / 100);
-        const bonusReduction = bonusEnemyTiers * 15; // Additional 15 frame reduction per tier
-        newSpawnRate = Math.max(45, newSpawnRate - bonusReduction); // Min 45 frames (0.75 seconds)
+        const bonusReduction = bonusEnemyTiers * 15;
+        newSpawnRate = Math.max(45, newSpawnRate - bonusReduction);
       }
       
       enemySpawnRate = newSpawnRate;
@@ -475,7 +558,6 @@
       return !(r2.left > r1.right || r2.right < r1.left || r2.top > r1.bottom || r2.bottom < r1.top);
     }
 
-    // Knock over letter with bounce and wobble
     function knockOverLetter(letter, impactX, impactY, force) {
       if (letter.dataset.knocked === 'true') return;
       letter.dataset.knocked = 'true';
@@ -490,7 +572,6 @@
       setTimeout(() => {
         letter.style.transition = 'transform 0.3s ease-in';
         letter.style.transform = 'translate(0, 0) rotate(0deg)';
-        // Add wobble effect after return
         setTimeout(() => {
           letter.style.transition = 'transform 0.15s ease-in-out';
           letter.style.transform = 'rotate(12deg)';
@@ -508,32 +589,27 @@
       }, 100);
     }
 
-    // Main update loop to move car and check collisions
     function update() {
       if (!funModeOn) return;
 
       carPos.x += velocity.x;
       carPos.y += velocity.y;
 
-      // Constrain car inside viewport
       carPos.x = Math.max(0, Math.min(window.innerWidth - car.offsetWidth, carPos.x));
       carPos.y = Math.max(0, Math.min(window.innerHeight - car.offsetHeight, carPos.y));
 
       car.style.left = carPos.x + 'px';
       car.style.top = carPos.y + 'px';
 
-      // Update enemies
       updateEnemies();
       checkEnemyCollisions();
 
-      // Spawn enemies
       enemySpawnTimer++;
       if (enemySpawnTimer >= enemySpawnRate) {
         createEnemy();
         enemySpawnTimer = 0;
       }
 
-      // Check letter collisions (original functionality for car)
       const carRect = car.getBoundingClientRect();
       letters.forEach(letter => {
         const letterRect = letter.getBoundingClientRect();
@@ -544,37 +620,31 @@
         }
       });
 
-      // Check enemy-letter collisions - enemies pass through but change direction randomly
       const currentTime = Date.now();
       enemies.forEach((enemy, enemyIndex) => {
         const enemyRect = enemy.element.getBoundingClientRect();
         letters.forEach(letter => {
           const letterRect = letter.getBoundingClientRect();
           if (rectsOverlap(enemyRect, letterRect)) {
-            // Only change direction if enough time has passed since last collision (prevent constant changes)
-            if (currentTime - enemy.lastTextCollision > 200) { // 200ms cooldown
+            if (currentTime - enemy.lastTextCollision > 200) {
               const dx = letterRect.left + letterRect.width / 2 - (enemyRect.left + enemyRect.width / 2);
               const dy = letterRect.top + letterRect.height / 2 - (enemyRect.top + enemyRect.height / 2);
               
-              // Force based on enemy speed and type for letter knock-over
               let force = enemy.speed * 0.3;
               if (enemy.type === 'boss') {
-                force *= 1.5; // Boss enemies have stronger impact
+                force *= 1.5;
               } else if (enemy.type === 'special') {
-                force *= 1.2; // Special enemies have medium impact
+                force *= 1.2;
               }
               knockOverLetter(letter, dx, dy, force);
               
-              // Add random horizontal velocity change instead of bouncing
-              const randomDirection = (Math.random() - 0.5) * 2; // Random value between -1 and 1
-              const velocityChange = randomDirection * (1 + Math.random() * 2); // Random velocity between -3 and 3
+              const randomDirection = (Math.random() - 0.5) * 2;
+              const velocityChange = randomDirection * (1 + Math.random() * 2);
               enemy.horizontalVelocity += velocityChange;
               
-              // Cap horizontal velocity to prevent enemies from moving too fast horizontally
               const maxHorizontalSpeed = enemy.speed * 0.8;
               enemy.horizontalVelocity = Math.max(-maxHorizontalSpeed, Math.min(maxHorizontalSpeed, enemy.horizontalVelocity));
               
-              // Update last collision time
               enemy.lastTextCollision = currentTime;
             }
           }
@@ -584,7 +654,110 @@
       animationFrameId = requestAnimationFrame(update);
     }
 
-    // Keyboard event listeners for movement and speed doubling
+    // Touch and drag controls
+    function handleTouchStart(e) {
+      if (!funModeOn) return;
+      e.preventDefault();
+      
+      const touch = e.touches[0];
+      const carRect = car.getBoundingClientRect();
+      
+      // Check if touch is on the car
+      if (touch.clientX >= carRect.left && touch.clientX <= carRect.right &&
+          touch.clientY >= carRect.top && touch.clientY <= carRect.bottom) {
+        isDragging = true;
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        carStartX = carPos.x;
+        carStartY = carPos.y;
+        
+        // Stop current movement
+        velocity.x = 0;
+        velocity.y = 0;
+        currentDir = null;
+        speed = 3;
+        speedDoubled = false;
+      }
+    }
+
+    function handleTouchMove(e) {
+      if (!funModeOn || !isDragging) return;
+      e.preventDefault();
+      
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+      
+      carPos.x = carStartX + deltaX;
+      carPos.y = carStartY + deltaY;
+      
+      // Keep car within bounds
+      carPos.x = Math.max(0, Math.min(window.innerWidth - car.offsetWidth, carPos.x));
+      carPos.y = Math.max(0, Math.min(window.innerHeight - car.offsetHeight, carPos.y));
+    }
+
+    function handleTouchEnd(e) {
+      isDragging = false;
+    }
+
+    // Touch button controls
+    function handleTouchButton(direction) {
+      if (!funModeOn) return;
+      
+      if (currentDir === direction) {
+        if (!speedDoubled) {
+          speed *= 2;
+          speedDoubled = true;
+          velocity.x = directions[direction].x * speed;
+          velocity.y = directions[direction].y * speed;
+        }
+        return;
+      }
+
+      if (currentDir === directions[direction].opposite) {
+        velocity.x = 0;
+        velocity.y = 0;
+        currentDir = null;
+        speed = 3;
+        speedDoubled = false;
+        return;
+      }
+
+      currentDir = direction;
+      speed = 3;
+      speedDoubled = false;
+      velocity.x = directions[direction].x * speed;
+      velocity.y = directions[direction].y * speed;
+    }
+
+    // Event listeners
+    if (isMobile) {
+      // Touch events for dragging
+      car.addEventListener('touchstart', handleTouchStart, { passive: false });
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd, { passive: false });
+      
+      // Touch button events
+      document.querySelectorAll('.touch-btn').forEach(btn => {
+        btn.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          handleTouchButton(btn.dataset.direction);
+        }, { passive: false });
+        
+        btn.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          if (currentDir === btn.dataset.direction) {
+            velocity.x = 0;
+            velocity.y = 0;
+            currentDir = null;
+            speed = 3;
+            speedDoubled = false;
+          }
+        }, { passive: false });
+      });
+    }
+
+    // Keyboard controls for desktop
     window.addEventListener('keydown', (e) => {
       if (!funModeOn) return;
       if (!directions[e.key]) return;
@@ -626,43 +799,89 @@
       }
     });
 
-    // Toggle Fun Mode button
+    // Fun Mode toggle
     funModeBtn.addEventListener('click', () => {
       funModeOn = !funModeOn;
       if (funModeOn) {
         funModeBtn.textContent = 'Exit Fun Mode';
-        gameUI.style.display = 'block'; // Show game UI
-        car.style.display = 'block'; // Show the car
+        gameUI.style.display = 'block';
+        car.style.display = 'block';
+        car.style.pointerEvents = 'auto'; // Enable touch interaction
+        
+        if (isMobile) {
+          touchControls.style.display = 'flex';
+          mobileInstructions.style.display = 'block';
+          // Hide instructions after 3 seconds
+          setTimeout(() => {
+            mobileInstructions.style.display = 'none';
+          }, 3000);
+        }
+        
         animationFrameId = requestAnimationFrame(update);
       } else {
         funModeBtn.textContent = 'Enter Fun Mode';
-        gameUI.style.display = 'none'; // Hide game UI
-        car.style.display = 'none'; // Hide the car
+        gameUI.style.display = 'none';
+        car.style.display = 'none';
+        car.style.pointerEvents = 'none';
+        
+        if (isMobile) {
+          touchControls.style.display = 'none';
+          mobileInstructions.style.display = 'none';
+        }
+        
         cancelAnimationFrame(animationFrameId);
-        // Reset all letters transform and knocked flag
+        
+        // Reset all letters
         letters.forEach(letter => {
           letter.style.transition = '';
           letter.style.transform = '';
           letter.dataset.knocked = 'false';
         });
+        
         // Remove all enemies
         enemies.forEach(enemy => enemy.element.remove());
         enemies = [];
         velocity.x = 0;
         velocity.y = 0;
+        isDragging = false;
+        
         // Reset game state
         score = 0;
         enemySpawnRate = 240;
         scoreEl.textContent = 'Score: 0';
+        
+        // Reset car position
+        carPos = { x: 20, y: window.innerHeight - 70 };
       }
     });
 
-    // Update car position on window resize to keep it on screen
+    // Handle window resize
     window.addEventListener('resize', () => {
       carPos.x = Math.min(carPos.x, window.innerWidth - car.offsetWidth);
       carPos.y = Math.min(carPos.y, window.innerHeight - car.offsetHeight);
+      
+      // Update car position on screen
+      if (funModeOn) {
+        car.style.left = carPos.x + 'px';
+        car.style.top = carPos.y + 'px';
+      }
     });
+
+    // Prevent default touch behaviors that might interfere with the game
+    document.addEventListener('touchstart', (e) => {
+      if (funModeOn && (e.target === car || e.target.classList.contains('touch-btn'))) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener('touchmove', (e) => {
+      if (funModeOn && isDragging) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
   </script>
 
 </body>
 </html>
+          
