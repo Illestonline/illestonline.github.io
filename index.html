@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +20,7 @@
       background-color: #121212;
       line-height: 1.6;
       position: relative;
+      overflow-x: hidden; /* Prevent horizontal scrollbars from intense glows */
     }
     
     h2 {
@@ -83,7 +85,7 @@
     #text span,
     h2 span {
       display: inline-block;
-      transition: transform 0.1s ease-in-out;
+      /* transition: transform 0.1s ease-in-out; */ 
       cursor: default;
     }
     
@@ -91,13 +93,23 @@
     h2 span.space {
       width: 0.3em;
     }
+
+    #text span.letter-hit, 
+    h2 span.letter-hit {
+      color: #ff4444;
+      text-shadow: 0 0 10px #ff4444;
+      opacity: 0.7; 
+      transform: scale(1.05); 
+      transition: opacity 0.1s ease-out, transform 0.1s ease-out, color 0.1s, text-shadow 0.1s;
+    }
     
     #text span.destroyed,
     h2 span.destroyed {
-      opacity: 0;
+      opacity: 0 !important; 
       color: #ff4444;
       text-shadow: 0 0 10px #ff4444;
-      transition: opacity 0.3s ease-out, color 0.3s ease-out, text-shadow 0.3s ease-out;
+      transition: opacity 0.5s 0.1s ease-out, transform 0.5s 0.1s ease-out; 
+      transform: scale(0.8); 
     }
     
     /* Car - much larger on mobile */
@@ -116,1474 +128,1250 @@
       font-size: 40px;
       line-height: 40px;
       text-align: center;
+      transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out, transform 0.3s ease-in-out;
     }
     
     /* Enemies - smaller on mobile */
     .enemy {
-  position: fixed;
-  width: 15px;
-  height: 15px;
-  background: transparent; /* Changed from red background */
-  border-radius: 50%;
-  z-index: 1000;
-  box-shadow: 0 0 15px #ff0000, 0 0 30px rgba(255, 0, 0, 0.8), 0 0 45px rgba(255, 0, 0, 0.6); /* Enhanced red glow */
-  user-select: none;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px; /* Size for emoji */
-  color: #ffffff; /* White emoji with red glow */
-  text-shadow: 0 0 8px #ff0000; /* Red glow on the emoji itself */
-}
+      position: fixed;
+      width: 15px;
+      height: 15px;
+      background: transparent; 
+      border-radius: 50%;
+      z-index: 1000;
+      box-shadow: 
+        0 0 5px rgba(255, 0, 0, 1),
+        0 0 15px rgba(255, 0, 0, 1),
+        0 0 30px rgba(255, 50, 50, 0.8),
+        0 0 50px rgba(255, 100, 100, 0.6);
+      user-select: none;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px; 
+      color: #ffffff; 
+      text-shadow: 0 0 3px #fff, 0 0 8px #ff0000, 0 0 12px #ff0000;
+      transition: filter 0.3s ease, opacity 0.3s ease;
+    }
 
-.enemy::before {
-  content: '👤';
-  display: block;
-}
+    .enemy::before {
+      content: '👤';
+      display: block;
+    }
 
-/* Special Enemies - Pulsing Bright Yellow with Silhouette */
-.special-enemy {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  background: transparent; /* Changed from yellow background */
-  border-radius: 50%;
-  z-index: 1000;
-  box-shadow: 0 0 20px #ffff00, 0 0 40px rgba(255, 255, 0, 0.9), 0 0 60px rgba(255, 255, 0, 0.7); /* Enhanced yellow glow */
-  user-select: none;
-  pointer-events: none;
-  animation: dramaticPulse 0.5s infinite alternate ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 5px; /* Smaller size for special enemy */
-  color: #000000; /* Black emoji for contrast against yellow */
-  text-shadow: 0 0 5px #ffff00; /* Yellow glow on emoji */
-}
+    .special-enemy {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: transparent; 
+      border-radius: 50%;
+      z-index: 1000;
+      box-shadow: 
+        0 0 8px rgba(255, 255, 0, 1),
+        0 0 20px rgba(255, 255, 0, 1),
+        0 0 40px rgba(255, 255, 100, 0.9),
+        0 0 70px rgba(255, 255, 150, 0.7);
+      user-select: none;
+      pointer-events: none;
+      animation: dramaticPulse 0.5s infinite alternate ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5px; 
+      color: #000000; 
+      text-shadow: 0 0 2px #fff, 0 0 5px #ffff00, 0 0 8px #ffff00;
+      transition: filter 0.3s ease, opacity 0.3s ease;
+    }
 
-.special-enemy::before {
-  content: '👤';
-  display: block;
-}
+    .special-enemy::before {
+      content: '👤';
+      display: block;
+    }
 
-/* Enhanced pulsing animation for special enemies */
-@keyframes dramaticPulse {
-  0% { 
-    transform: scale(0.8);
-    box-shadow: 0 0 15px #ffff00, 0 0 30px rgba(255, 255, 0, 0.7), 0 0 45px rgba(255, 255, 0, 0.5);
-  }
-  100% { 
-    transform: scale(3.0); /* Increased from 2.2 to 3.0 for more dramatic effect */
-    box-shadow: 0 0 35px #ffff00, 0 0 70px rgba(255, 255, 0, 1), 0 0 105px rgba(255, 255, 0, 0.8);
-  }
-}
+    @keyframes dramaticPulse {
+      0% { 
+        transform: scale(0.8);
+        box-shadow: 
+          0 0 6px rgba(255, 255, 0, 0.8),
+          0 0 15px rgba(255, 255, 0, 0.8),
+          0 0 30px rgba(255, 255, 100, 0.7),
+          0 0 50px rgba(255, 255, 150, 0.5);
+      }
+      100% { 
+        transform: scale(3.0); 
+        box-shadow: 
+          0 0 10px rgba(255, 255, 0, 1),
+          0 0 25px rgba(255, 255, 0, 1),
+          0 0 50px rgba(255, 255, 100, 0.9),
+          0 0 80px rgba(255, 255, 150, 0.7);
+      }
+    }
 
-/* Boss Enemies - Strobing Bright Blue with Silhouette */
-.boss-enemy {
-  position: fixed;
-  width: 18px;
-  height: 18px;
-  background: transparent; /* Changed from blue background */
-  border-radius: 50%;
-  z-index: 1000;
-  box-shadow: 0 0 25px #0033ff, 0 0 50px rgba(0, 51, 255, 0.9), 0 0 75px rgba(0, 51, 255, 0.7); /* Enhanced blue glow */
-  user-select: none;
-  pointer-events: none;
-  animation: strobeFlash 0.08s infinite steps(2, start); /* Faster strobe for more dramatic effect */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px; /* Size for boss emoji */
-  color: #ffffff; /* White emoji with blue glow */
-  text-shadow: 0 0 10px #0033ff; /* Blue glow on emoji */
-}
+    .boss-enemy {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      background: transparent; 
+      border-radius: 50%;
+      z-index: 1000;
+      box-shadow: 
+        0 0 8px rgba(0, 100, 255, 1),
+        0 0 25px rgba(0, 100, 255, 1),
+        0 0 50px rgba(50, 150, 255, 0.8),
+        0 0 80px rgba(100, 200, 255, 0.6);
+      user-select: none;
+      pointer-events: none;
+      animation: strobeFlash 0.08s infinite steps(2, start); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px; 
+      color: #ffffff; 
+      text-shadow: 0 0 4px #fff, 0 0 10px #0033ff, 0 0 15px #0033ff;
+      transition: filter 0.3s ease, opacity 0.3s ease;
+    }
 
-.boss-enemy::before {
-  content: '👤';
-  display: block;
-}
+    .boss-enemy::before {
+      content: '👤';
+      display: block;
+    }
 
-/* Enhanced strobing animation for boss enemies */
-@keyframes strobeFlash {
-  0% { 
-    box-shadow: 0 0 25px #0033ff, 0 0 50px rgba(0, 51, 255, 0.9), 0 0 75px rgba(0, 51, 255, 0.7);
-    transform: scale(1);
-    color: #ffffff;
-    text-shadow: 0 0 10px #0033ff;
-  }
-  50% { 
-    box-shadow: 0 0 40px #66ccff, 0 0 80px rgba(102, 204, 255, 1), 0 0 120px rgba(102, 204, 255, 0.9);
-    transform: scale(1.2); /* Increased scale change */
-    color: #000000; /* Change emoji color during strobe */
-    text-shadow: 0 0 15px #66ccff;
-  }
-  100% { 
-    box-shadow: 0 0 25px #0033ff, 0 0 50px rgba(0, 51, 255, 0.9), 0 0 75px rgba(0, 51, 255, 0.7);
-    transform: scale(1);
-    color: #ffffff;
-    text-shadow: 0 0 10px #0033ff;
-  }
-}
+    @keyframes strobeFlash {
+      0% { 
+        box-shadow: 
+          0 0 8px rgba(0, 100, 255, 1), 0 0 25px rgba(0, 100, 255, 1),
+          0 0 50px rgba(50, 150, 255, 0.8), 0 0 80px rgba(100, 200, 255, 0.6);
+        transform: scale(1); color: #ffffff;
+        text-shadow: 0 0 4px #fff, 0 0 10px #0033ff, 0 0 15px #0033ff;
+      }
+      50% { 
+        box-shadow: 
+          0 0 12px rgba(102, 204, 255, 1), 0 0 30px rgba(102, 204, 255, 1),
+          0 0 60px rgba(150, 220, 255, 0.9), 0 0 100px rgba(180, 230, 255, 0.8);
+        transform: scale(1.2); color: #000000; 
+        text-shadow: 0 0 5px #fff, 0 0 15px #66ccff, 0 0 20px #66ccff;
+      }
+      100% { 
+        box-shadow: 
+          0 0 8px rgba(0, 100, 255, 1), 0 0 25px rgba(0, 100, 255, 1),
+          0 0 50px rgba(50, 150, 255, 0.8), 0 0 80px rgba(100, 200, 255, 0.6);
+        transform: scale(1); color: #ffffff;
+        text-shadow: 0 0 4px #fff, 0 0 10px #0033ff, 0 0 15px #0033ff;
+      }
+    }
 
-/* Mobile adjustments for enemies */
-@media (max-width: 768px) {
-  .enemy {
-    width: 12px;
-    height: 12px;
-    font-size: 10px;
-  }
-  
-  .special-enemy {
-    width: 5px;
-    height: 5px;
-    font-size: 4px;
-  }
-  
-  .boss-enemy {
-    width: 15px;
-    height: 15px;
-    font-size: 12px;
-  }
-}
+    @media (max-width: 768px) {
+      .enemy { width: 12px; height: 12px; font-size: 10px; }
+      .special-enemy { width: 5px; height: 5px; font-size: 4px; }
+      .boss-enemy { width: 15px; height: 15px; font-size: 12px; }
+    }
 
     /* Game UI */
     #gameUI {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      color: #eee;
-      font-weight: 600;
-      z-index: 1100;
-      user-select: none;
-      display: none;
-      font-size: 0.9rem;
+      position: fixed; top: 10px; left: 10px; color: #eee; font-weight: 600;
+      z-index: 1100; user-select: none; display: none; font-size: 0.9rem;
     }
-
-    #score {
-      margin-bottom: 5px;
-      color: #bb86fc;
-    }
+    #score { margin-bottom: 5px; color: #bb86fc; }
 
     /* Game Over Overlay */
     #gameOverOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      user-select: none;
-      padding: 20px;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9); display: none; justify-content: center;
+      align-items: center; z-index: 2000; user-select: none; padding: 20px;
     }
-
     #gameOverContent {
-      text-align: center;
-      color: #eee;
-      background: #1e1e1e;
-      padding: 30px 20px;
-      border-radius: 12px;
-      border: 2px solid #ff4444;
-      box-shadow: 0 0 30px rgba(255, 68, 68, 0.5);
-      max-width: 90%;
-      width: 400px;
+      text-align: center; color: #eee; background: #1e1e1e; padding: 30px 20px;
+      border-radius: 12px; border: 2px solid #ff4444; box-shadow: 0 0 30px rgba(255,68,68,0.5);
+      max-width: 90%; width: 400px;
     }
-
-    #gameOverContent h1 {
-      color: #ff4444;
-      font-size: 2rem;
-      margin-bottom: 15px;
-      text-shadow: 0 0 15px #ff4444;
-    }
-
-    #gameOverContent p {
-      font-size: 1rem;
-      margin-bottom: 20px;
-    }
+    #gameOverContent h1 { color: #ff4444; font-size: 2rem; margin-bottom: 15px; text-shadow: 0 0 15px #ff4444; }
+    #gameOverContent p { font-size: 1rem; margin-bottom: 10px; } /* Reduced margin-bottom slightly */
+    #gameOverContent p:last-of-type { margin-bottom: 20px; } /* Add more margin to the score line */
 
     #restartBtn {
-      background-color: #bb86fc;
-      color: #121212;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      touch-action: manipulation;
+      background-color: #bb86fc; color: #121212; border: none; padding: 12px 25px;
+      border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;
+      transition: background-color 0.3s ease; touch-action: manipulation;
     }
-
-    #restartBtn:hover {
-      background-color: #6200ee;
-      color: #eee;
-    }
+    #restartBtn:hover { background-color: #6200ee; color: #eee; }
 
     /* Instructions Overlay */
     #instructionsOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 2500;
-      user-select: none;
-      padding: 20px;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); display: none; justify-content: center;
+      align-items: center; z-index: 2500; user-select: none; padding: 20px;
     }
-
     #instructionsContent {
-      text-align: center;
-      color: #eee;
-      background: #1e1e1e;
-      padding: 30px 25px;
-      border-radius: 15px;
-      border: 2px solid #bb86fc;
-      box-shadow: 0 0 40px rgba(187, 134, 252, 0.6);
-      max-width: 95%;
-      width: 500px;
-      max-height: 90vh;
-      overflow-y: auto;
+      text-align: center; color: #eee; background: #1e1e1e; padding: 30px 25px;
+      border-radius: 15px; border: 2px solid #bb86fc; box-shadow: 0 0 40px rgba(187,134,252,0.6);
+      max-width: 95%; width: 500px; max-height: 90vh; overflow-y: auto;
     }
-
-    #instructionsContent h1 {
-      color: #bb86fc;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px #bb86fc;
-    }
-
-    #instructionsContent p {
-      font-size: 1.1rem;
-      margin-bottom: 25px;
-      line-height: 1.5;
-    }
-
+    #instructionsContent h1 { color: #bb86fc; font-size: 1.8rem; margin-bottom: 20px; text-shadow: 0 0 10px #bb86fc; }
+    #instructionsContent p { font-size: 1.1rem; margin-bottom: 25px; line-height: 1.5; }
     .controls-section {
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 10px;
-      margin: 20px 0;
-      border: 1px solid #333;
+      background: #2a2a2a; padding: 20px; border-radius: 10px;
+      margin: 20px 0; border: 1px solid #333;
     }
-
-    .controls-title {
-      color: #ffaa00;
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 15px;
-    }
-
+    .controls-title { color: #ffaa00; font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; }
     .enemy-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin: 25px 0;
-      padding: 20px;
-      background: #2a2a2a;
-      border-radius: 10px;
-      border: 1px solid #333;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      margin: 25px 0; padding: 20px; background: #2a2a2a;
+      border-radius: 10px; border: 1px solid #333;
     }
-
     .enemy-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      padding: 15px 10px;
-      background: #1a1a1a;
-      border-radius: 8px;
-      border: 1px solid #444;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      padding: 15px 10px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;
     }
-
     .enemy-visual {
-      position: relative;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative; width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
     }
-
     .enemy-demo {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: transparent; /* Changed from solid color */
-  box-shadow: 0 0 12px #ff0000, 0 0 24px rgba(255, 0, 0, 0.8); /* Bright red glow */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  color: #ffffff;
-  text-shadow: 0 0 6px #ff0000;
-}
-
-.enemy-demo::before {
-  content: '👤';
-  display: block;
-}
-
-.special-enemy-demo {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: transparent; /* Changed from solid color */
-  box-shadow: 0 0 15px #ffff00, 0 0 30px rgba(255, 255, 0, 0.8); /* Bright yellow glow */
-  animation: demoSpecialPulse 1s infinite alternate ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  color: #000000; /* Black for contrast against yellow */
-  text-shadow: 0 0 4px #ffff00;
-}
-
-.special-enemy-demo::before {
-  content: '👤';
-  display: block;
-}
-
-.boss-enemy-demo {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: transparent; /* Changed from solid color */
-  box-shadow: 0 0 18px #0033ff, 0 0 36px rgba(0, 51, 255, 0.8); /* Bright blue glow */
-  animation: demoBossFlash 0.3s infinite steps(2, start);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: #ffffff;
-  text-shadow: 0 0 8px #0033ff;
-}
-
-.boss-enemy-demo::before {
-  content: '👤';
-  display: block;
-}
-
-/* Enhanced demo animations to match the actual game */
-@keyframes demoSpecialPulse {
-  0% { 
-    transform: scale(0.8);
-    box-shadow: 0 0 12px #ffff00, 0 0 24px rgba(255, 255, 0, 0.6);
-  }
-  100% { 
-    transform: scale(1.4); /* Increased for more dramatic effect */
-    box-shadow: 0 0 20px #ffff00, 0 0 40px rgba(255, 255, 0, 0.9);
-  }
-}
-
-@keyframes demoBossFlash {
-  0% { 
-    box-shadow: 0 0 18px #0033ff, 0 0 36px rgba(0, 51, 255, 0.8);
-    color: #ffffff;
-    text-shadow: 0 0 8px #0033ff;
-  }
-  50% { 
-    box-shadow: 0 0 25px #66ccff, 0 0 50px rgba(102, 204, 255, 1);
-    color: #000000; /* Change color during flash */
-    text-shadow: 0 0 12px #66ccff;
-  }
-  100% { 
-    box-shadow: 0 0 18px #0033ff, 0 0 36px rgba(0, 51, 255, 0.8);
-    color: #ffffff;
-    text-shadow: 0 0 8px #0033ff;
-  }
-}
-
-    .enemy-points {
-      color: #bb86fc;
-      font-weight: 600;
-      font-size: 1.1rem;
+      width: 20px; height: 20px; border-radius: 50%; background: transparent; 
+      box-shadow: 0 0 12px #ff0000, 0 0 24px rgba(255,0,0,0.8); 
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: #ffffff; text-shadow: 0 0 6px #ff0000;
     }
-
-    .enemy-label {
-      color: #ccc;
-      font-size: 0.9rem;
-      margin-top: 5px;
+    .enemy-demo::before { content: '👤'; display: block; }
+    .special-enemy-demo {
+      width: 12px; height: 12px; border-radius: 50%; background: transparent; 
+      box-shadow: 0 0 15px #ffff00, 0 0 30px rgba(255,255,0,0.8); 
+      animation: demoSpecialPulse 1s infinite alternate ease-in-out;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #000000; text-shadow: 0 0 4px #ffff00;
     }
-
+    .special-enemy-demo::before { content: '👤'; display: block; }
+    .boss-enemy-demo {
+      width: 24px; height: 24px; border-radius: 50%; background: transparent; 
+      box-shadow: 0 0 18px #0033ff, 0 0 36px rgba(0,51,255,0.8); 
+      animation: demoBossFlash 0.3s infinite steps(2, start);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; color: #ffffff; text-shadow: 0 0 8px #0033ff;
+    }
+    .boss-enemy-demo::before { content: '👤'; display: block; }
+    @keyframes demoSpecialPulse {
+      0% { transform: scale(0.8); box-shadow: 0 0 12px #ffff00, 0 0 24px rgba(255,255,0,0.6); }
+      100% { transform: scale(1.4); box-shadow: 0 0 20px #ffff00, 0 0 40px rgba(255,255,0,0.9); }
+    }
+    @keyframes demoBossFlash {
+      0% { box-shadow: 0 0 18px #0033ff,0 0 36px rgba(0,51,255,0.8); color:#fff; text-shadow:0 0 8px #0033ff;}
+      50% { box-shadow: 0 0 25px #66ccff,0 0 50px rgba(102,204,255,1); color:#000; text-shadow:0 0 12px #66ccff;}
+      100% { box-shadow: 0 0 18px #0033ff,0 0 36px rgba(0,51,255,0.8); color:#fff; text-shadow:0 0 8px #0033ff;}
+    }
+    .enemy-points { color: #bb86fc; font-weight: 600; font-size: 1.1rem; }
+    .enemy-label { color: #ccc; font-size: 0.9rem; margin-top: 5px; }
     #readyBtn {
-      background-color: #00cc44;
-      color: #fff;
-      border: none;
-      padding: 15px 35px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      touch-action: manipulation;
-      margin-top: 25px;
-      box-shadow: 0 4px 15px rgba(0, 204, 68, 0.3);
+      background-color: #00cc44; color: #fff; border: none; padding: 15px 35px;
+      border-radius: 10px; font-weight: 700; font-size: 1.2rem; cursor: pointer;
+      transition: all 0.3s ease; touch-action: manipulation; margin-top: 25px;
+      box-shadow: 0 4px 15px rgba(0,204,68,0.3);
     }
-
-    #readyBtn:hover {
-      background-color: #00aa38;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 204, 68, 0.4);
-    }
-
-    /* Fun Mode Button - Enhanced for mobile */
+    #readyBtn:hover { background-color:#00aa38; transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,204,68,0.4); }
     #funModeBtn {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background-color: #3700b3;
-      color: #eee;
-      border: none;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      z-index: 1100;
-      user-select: none;
-      transition: background-color 0.3s ease;
-      font-size: 0.9rem;
-      touch-action: manipulation;
-      min-height: 48px;
-      min-width: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position:fixed; top:10px; right:10px; background-color:#3700b3; color:#eee;
+      border:none; padding:12px 16px; border-radius:8px; font-weight:600;
+      cursor:pointer; z-index:1100; user-select:none; transition:background-color .3s ease;
+      font-size:.9rem; touch-action:manipulation; min-height:48px; min-width:120px;
+      display:flex; align-items:center; justify-content:center;
     }
+    #funModeBtn:hover { background-color: #6200ee; }
     
-    #funModeBtn:hover {
-      background-color: #6200ee;
-    }
-    
-    /* Mobile-specific styles */
     @media (max-width: 768px) {
-      body {
-        margin: 10px;
-        padding: 10px;
-      }
-      
-      #text {
-        font-size: 1.8rem;
-        margin-bottom: 15px;
-      }
-      
-      h2 {
-        font-size: 1.3rem;
-        margin-top: 25px;
-        white-space: normal; /* Allow wrapping on very small screens */
-      }
-      
-      section {
-        padding: 15px;
-        margin-top: 15px;
-      }
-      
-      p {
-        font-size: 1rem;
-      }
-      
-      /* Make car much larger on mobile - 3x the original size */
-      #car {
-        width: 180px;
-        height: 120px;
-        font-size: 120px;
-        line-height: 120px;
-      }
-      
-      .enemy {
-        width: 12px;
-        height: 12px;
-      }
-      
-      .special-enemy {
+      body { margin:10px; padding:10px; }
+      #text { font-size:1.8rem; margin-bottom:15px; }
+      h2 { font-size:1.3rem; margin-top:25px; white-space:normal; }
+      section { padding:15px; margin-top:15px; }
+      p { font-size:1rem; }
+      #car { width:180px; height:120px; font-size:120px; line-height:120px; }
+      #gameOverContent { padding:20px 15px; } #gameOverContent h1 { font-size:1.5rem; }
+      #instructionsContent { padding:25px 20px; width:95%; }
+      #instructionsContent h1 { font-size:1.5rem; } #instructionsContent p { font-size:1rem; }
+      .enemy-grid { grid-template-columns:1fr; gap:15px; padding:15px; }
+      .enemy-item { flex-direction:row; text-align:left; padding:12px 15px; }
+      .enemy-visual { width:50px; height:30px; margin-right:15px; }
+      #funModeBtn { font-size:.85rem; padding:14px 18px; min-height:52px; min-width:130px; border-radius:10px; }
+      #readyBtn { padding:18px 40px; font-size:1.1rem; }
+    }
+    @media (max-width: 480px) {
+      #text { font-size:1.5rem; } h2 { font-size:1.2rem; } section { padding:12px; }
+      #car { width:150px; height:100px; font-size:100px; line-height:100px; bottom:15px; left:15px; }
+      #gameUI { font-size:.8rem; }
+      #instructionsContent { padding:20px 15px; } #instructionsContent h1 { font-size:1.3rem; }
+      #funModeBtn { font-size:.8rem; padding:16px 20px; min-height:56px; min-width:140px; border-radius:12px; }
+    }
+    @media (pointer: coarse) {
+      a { padding:8px 0; display:inline-block; }
+      #funModeBtn { min-height:48px; min-width:120px; display:flex; align-items:center; justify-content:center; font-weight:700; }
+      #restartBtn { min-height:48px; padding:14px 32px; font-size:1.1rem; }
+      #readyBtn { min-height:48px; padding:16px 38px; }
+    }
+    @media (max-width: 768px) and (orientation: landscape) {
+      body { margin:5px; padding:5px; }
+      #text { font-size:1.6rem; margin-bottom:10px; }
+      section { padding:10px; margin-top:10px; }
+      #car { width:120px; height:80px; font-size:80px; line-height:80px; bottom:10px; left:10px; }
+      #gameUI { top:5px; left:5px; }
+      #funModeBtn { top:5px; right:5px; min-height:44px; padding:12px 16px; }
+      #instructionsContent { max-height:85vh; }
+    }
+
+    /* --- START OF POWER-UPS.css --- */
+    .powerup{position:fixed;width:20px;height:20px;border-radius:50%;z-index:1000;user-select:none;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:16px;animation:powerupFloat 2s infinite ease-in-out}@keyframes powerupFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.05)}}.emp-powerup{background:transparent;box-shadow:0 0 20px #8a2be2,0 0 40px #8a2be2,0 0 60px rgba(186,85,211,.8);color:#fff;text-shadow:0 0 12px #8a2be2;animation:empPulse 1.5s infinite ease-in-out,powerupFloat 2s infinite ease-in-out}.emp-powerup::before{content:'⚡';display:block}@keyframes empPulse{0%{box-shadow:0 0 20px #8a2be2,0 0 40px #8a2be2,0 0 60px rgba(186,85,211,.8);transform:scale(1)}50%{box-shadow:0 0 30px #9932cc,0 0 60px #9932cc,0 0 90px #ba55d3;transform:scale(1.1)}100%{box-shadow:0 0 20px #8a2be2,0 0 40px #8a2be2,0 0 60px rgba(186,85,211,.8);transform:scale(1)}}.speed-powerup{background:transparent;box-shadow:0 0 22px #00ff00,0 0 44px #00ff00,0 0 66px rgba(50,205,50,.8);color:#000;text-shadow:0 0 10px #00ff00;animation:speedRush .8s infinite linear,powerupFloat 2s infinite ease-in-out}.speed-powerup::before{content:'🚀';display:block}@keyframes speedRush{0%{box-shadow:0 0 22px #00ff00,0 0 44px #00ff00,0 0 66px rgba(50,205,50,.8)}25%{box-shadow:0 0 35px #32cd32,0 0 70px #32cd32,0 0 105px rgba(144,238,144,.9)}50%{box-shadow:0 0 28px #adff2f,0 0 56px #adff2f,0 0 84px rgba(50,205,50,.8)}75%{box-shadow:0 0 32px #7fff00,0 0 64px #7fff00,0 0 96px rgba(144,238,144,.9)}100%{box-shadow:0 0 22px #00ff00,0 0 44px #00ff00,0 0 66px rgba(50,205,50,.8)}}.magnet-powerup{background:transparent;box-shadow:0 0 25px #fff,0 0 50px #fff,0 0 75px rgba(230,230,250,.8);color:#000;text-shadow:0 0 8px #fff;animation:magneticPull 1.2s infinite ease-in-out,powerupFloat 2s infinite ease-in-out}.magnet-powerup::before{content:'🧲';display:block}@keyframes magneticPull{0%{box-shadow:0 0 25px #fff,0 0 50px #fff,0 0 75px rgba(230,230,250,.8);transform:scale(1)}33%{box-shadow:0 0 35px #f0f8ff,0 0 70px #f0f8ff,0 0 105px rgba(230,230,250,1);transform:scale(.9)}66%{box-shadow:0 0 40px #e6e6fa,0 0 80px #e6e6fa,0 0 120px rgba(255,255,255,.9);transform:scale(1.1)}100%{box-shadow:0 0 25px #fff,0 0 50px #fff,0 0 75px rgba(230,230,250,.8);transform:scale(1)}}.regen-powerup{background:transparent;box-shadow:0 0 23px #da70d6,0 0 46px #da70d6,0 0 69px rgba(221,160,221,.8);color:#fff;text-shadow:0 0 10px #da70d6;animation:healingPulse 1.8s infinite ease-in-out,powerupFloat 2s infinite ease-in-out}.regen-powerup::before{content:'💚';display:block}@keyframes healingPulse{0%{box-shadow:0 0 23px #da70d6,0 0 46px #da70d6,0 0 69px rgba(221,160,221,.8);filter:brightness(1)}50%{box-shadow:0 0 35px #dda0dd,0 0 70px #dda0dd,0 0 105px rgba(238,130,238,.9);filter:brightness(1.2)}100%{box-shadow:0 0 23px #da70d6,0 0 46px #da70d6,0 0 69px rgba(221,160,221,.8);filter:brightness(1)}}.boss-ally-powerup{background:transparent;width:24px;height:24px;box-shadow:0 0 28px #9370db,0 0 56px #9370db,0 0 84px rgba(186,85,211,.8);color:#fff;text-shadow:0 0 12px #9370db;font-size:20px;animation:protectiveAura 2.2s infinite ease-in-out,powerupFloat 2s infinite ease-in-out}.boss-ally-powerup::before{content:'🛡️';display:block}@keyframes protectiveAura{0%{box-shadow:0 0 28px #9370db,0 0 56px #9370db,0 0 84px rgba(186,85,211,.8);transform:scale(1)}25%{box-shadow:0 0 35px #8a2be2,0 0 70px #8a2be2,0 0 105px #ba55d3;transform:scale(1.05)}50%{box-shadow:0 0 40px #ba55d3,0 0 80px #ba55d3,0 0 120px rgba(221,160,221,.9);transform:scale(.95)}75%{box-shadow:0 0 32px #9932cc,0 0 64px #9932cc,0 0 96px rgba(186,85,211,.8);transform:scale(1.03)}100%{box-shadow:0 0 28px #9370db,0 0 56px #9370db,0 0 84px rgba(186,85,211,.8);transform:scale(1)}}@media (max-width:768px){.powerup{width:16px;height:16px;font-size:12px}.boss-ally-powerup{width:20px;height:20px;font-size:16px}}@media (max-width:480px){.powerup{width:14px;height:14px;font-size:10px}.boss-ally-powerup{width:18px;height:18px;font-size:14px}}
+    /* --- END OF POWER-UPS.css --- */
+
+    /* --- START OF POWER-DOWNS-.css --- */
+    .powerdown{position:fixed;width:18px;height:18px;border-radius:50%;z-index:1000;user-select:none;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:14px;animation:powerdownThreat 1s infinite ease-in-out}@keyframes powerdownThreat{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.1) rotate(5deg)}}.rapidfire-powerdown{background:transparent;box-shadow:0 0 35px red,0 0 70px red,0 0 105px #ff4500;color:#fff;text-shadow:0 0 15px red;animation:rapidFireChaos .4s infinite linear,powerdownThreat 1s infinite ease-in-out}.rapidfire-powerdown::before{content:'💥';display:block}@keyframes rapidFireChaos{0%{box-shadow:0 0 35px red,0 0 70px red,0 0 105px #ff4500;filter:brightness(1)}25%{box-shadow:0 0 50px #dc143c,0 0 100px #dc143c,0 0 150px red;filter:brightness(1.5)}50%{box-shadow:0 0 45px #b22222,0 0 90px #b22222,0 0 135px #dc143c;filter:brightness(1.3)}75%{box-shadow:0 0 40px #ff4500,0 0 80px #ff4500,0 0 120px red;filter:brightness(1.4)}100%{box-shadow:0 0 35px red,0 0 70px red,0 0 105px #ff4500;filter:brightness(1)}}.exploding-boss-powerdown{background:transparent;width:22px;height:22px;box-shadow:0 0 40px red,0 0 80px red,0 0 120px #ff4500;color:#fff;text-shadow:0 0 18px red;font-size:18px;animation:explosiveInstability .6s infinite steps(3,start),powerdownThreat 1s infinite ease-in-out}.exploding-boss-powerdown::before{content:'💣';display:block}@keyframes explosiveInstability{0%{box-shadow:0 0 40px red,0 0 80px red,0 0 120px #ff4500;transform:scale(1);filter:brightness(1)}33%{box-shadow:0 0 60px #dc143c,0 0 120px #dc143c,0 0 180px red;transform:scale(1.2);filter:brightness(1.8)}66%{box-shadow:0 0 35px #b22222,0 0 70px #b22222,0 0 105px #dc143c;transform:scale(.9);filter:brightness(1.2)}100%{box-shadow:0 0 55px #ff4500,0 0 110px #ff4500,0 0 165px red;transform:scale(1.1);filter:brightness(1.6)}}.boss-hunter-powerdown{background:transparent;width:20px;height:20px;box-shadow:0 0 38px red,0 0 76px red,0 0 114px #ff4500;color:#fff;text-shadow:0 0 16px red;font-size:16px;animation:hunterLock 1.5s infinite ease-in-out,powerdownThreat 1s infinite ease-in-out}.boss-hunter-powerdown::before{content:'🎯';display:block}@keyframes hunterLock{0%{box-shadow:0 0 38px red,0 0 76px red,0 0 114px #ff4500;transform:scale(1)}25%{box-shadow:0 0 45px #dc143c,0 0 90px #dc143c,0 0 135px red;transform:scale(.85)}50%{box-shadow:0 0 55px #b22222,0 0 110px #b22222,0 0 165px #dc143c;transform:scale(1.15)}75%{box-shadow:0 0 42px #ff4500,0 0 84px #ff4500,0 0 126px red;transform:scale(.9)}100%{box-shadow:0 0 38px red,0 0 76px red,0 0 114px #ff4500;transform:scale(1)}}.player-speed-boost{box-shadow:0 0 25px #00ff00,0 0 50px rgba(0,255,0,.8)!important;animation:speedGlow .3s infinite alternate ease-in-out}@keyframes speedGlow{0%{filter:brightness(1.2) scale(1)}100%{filter:brightness(1.5) scale(1.05)}}.emp-flash{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(138,43,226,.3);pointer-events:none;z-index:9999;animation:empFlashEffect .5s ease-out}@keyframes empFlashEffect{0%{opacity:1;background:rgba(138,43,226,.6)}100%{opacity:0;background:rgba(138,43,226,0)}}.player-magnet-mode{box-shadow:0 0 30px #fff,0 0 60px hsla(0,0%,100%,.9)!important;animation:magnetGlow 1s infinite ease-in-out}@keyframes magnetGlow{0%{filter:brightness(1.3) scale(1)}50%{filter:brightness(1.6) scale(1.03)}100%{filter:brightness(1.3) scale(1)}}.enemy-slowed{filter:brightness(.6) contrast(.8);animation:slowedEffect 2s infinite ease-in-out}@keyframes slowedEffect{0%,100%{opacity:.7}50%{opacity:.9}}@media (max-width:768px){.powerdown{width:15px;height:15px;font-size:11px}.exploding-boss-powerdown{width:18px;height:18px;font-size:14px}.boss-hunter-powerdown{width:16px;height:16px;font-size:12px}}@media (max-width:480px){.powerdown{width:13px;height:13px;font-size:9px}.exploding-boss-powerdown{width:16px;height:16px;font-size:12px}.boss-hunter-powerdown{width:14px;height:14px;font-size:10px}}
+    /* --- END OF POWER-DOWNS-.css --- */
+
+    /* --- START OF Particle Effects.CSS --- */
+    /* Car particle trail */
+    .particle {
+        position: fixed; 
         width: 5px;
         height: 5px;
-      }
-      
-      .boss-enemy {
-        width: 15px;
-        height: 15px;
-      }
-      
-      #gameOverContent {
-        padding: 20px 15px;
-      }
-      
-      #gameOverContent h1 {
-        font-size: 1.5rem;
-      }
-
-      #instructionsContent {
-        padding: 25px 20px;
-        width: 95%;
-      }
-
-      #instructionsContent h1 {
-        font-size: 1.5rem;
-      }
-
-      #instructionsContent p {
-        font-size: 1rem;
-      }
-
-      .enemy-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        padding: 15px;
-      }
-
-      .enemy-item {
-        flex-direction: row;
-        text-align: left;
-        padding: 12px 15px;
-      }
-
-      .enemy-visual {
-        width: 50px;
-        height: 30px;
-        margin-right: 15px;
-      }
-      
-      /* Enhanced mobile button styling */
-      #funModeBtn {
-        font-size: 0.85rem;
-        padding: 14px 18px;
-        min-height: 52px;
-        min-width: 130px;
-        border-radius: 10px;
-      }
-
-      #readyBtn {
-        padding: 18px 40px;
-        font-size: 1.1rem;
-      }
+        background-color: #bb86fc;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: particleFade 0.8s forwards;
+        pointer-events: none;
+        z-index: 1000; 
     }
-    
-    /* Extra small screens */
-    @media (max-width: 480px) {
-      #text {
-        font-size: 1.5rem;
-      }
-      
-      h2 {
-        font-size: 1.2rem;
-      }
-      
-      section {
-        padding: 12px;
-      }
-      
-      /* Even larger car for extra small screens */
-      #car {
-        width: 150px;
-        height: 100px;
-        font-size: 100px;
-        line-height: 100px;
-        bottom: 15px;
-        left: 15px;
-      }
-      
-      #gameUI {
-        font-size: 0.8rem;
-      }
-
-      #instructionsContent {
-        padding: 20px 15px;
-      }
-
-      #instructionsContent h1 {
-        font-size: 1.3rem;
-      }
-      
-      /* Maximum touch-friendly button on small screens */
-      #funModeBtn {
-        font-size: 0.8rem;
-        padding: 16px 20px;
-        min-height: 56px;
-        min-width: 140px;
-        border-radius: 12px;
-      }
+    @keyframes particleFade {
+        0% { transform: scale(1) translateY(0); opacity: 0.8; }
+        100% { transform: scale(0.3) translateY(20px); opacity: 0; }
     }
-    
-    /* Touch-friendly improvements */
-    @media (pointer: coarse) {
-      a {
-        padding: 8px 0;
-        display: inline-block;
-      }
-      
-      /* Ensure button is always touch-friendly */
-      #funModeBtn {
-        min-height: 48px;
-        min-width: 120px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-      }
-      
-      #restartBtn {
-        min-height: 48px;
-        padding: 14px 32px;
-        font-size: 1.1rem;
-      }
 
-      #readyBtn {
-        min-height: 48px;
-        padding: 16px 38px;
-      }
+    /* Explosion effect for boss */
+    @keyframes explosion {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(3); opacity: 0; }
     }
-    
-    /* Landscape orientation on mobile */
-    @media (max-width: 768px) and (orientation: landscape) {
-      body {
-        margin: 5px;
-        padding: 5px;
-      }
-      
-      #text {
-        font-size: 1.6rem;
-        margin-bottom: 10px;
-      }
-      
-      section {
-        padding: 10px;
-        margin-top: 10px;
-      }
-      
-      #car {
-        width: 120px;
-        height: 80px;
-        font-size: 80px;
-        line-height: 80px;
-        bottom: 10px;
-        left: 10px;
-      }
-      
-      #gameUI {
-        top: 5px;
-        left: 5px;
-      }
-      
-      #funModeBtn {
-        top: 5px;
-        right: 5px;
-        min-height: 44px;
-        padding: 12px 16px;
-      }
+    .explosion-effect {
+      position: fixed; 
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ff6600 0%, #ff0000 40%, transparent 70%);
+      animation: explosion 1s ease-out forwards;
+      pointer-events: none;
+      z-index: 1500; 
+    }
+    .explosion-effect::before { 
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle, #ffffff 0%, transparent 30%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: explosion 0.8s ease-out forwards; 
+    }
+    /* --- END OF Particle Effects.CSS --- */
 
-      #instructionsContent {
-        max-height: 85vh;
-      }
-    }
   </style>
-</head>
-<body>
+</head><body>
 
   <div id="gameUI">
     <div id="score">Score: 0</div>
   </div>
 
-  <!-- Instructions Overlay -->
   <div id="instructionsOverlay">
     <div id="instructionsContent">
       <h1>🛡️ Help Protect My Portfolio! 🛡️</h1>
       <p>The hackers are coming to wreck my portfolio - can you help keep it safe?</p>
-      
       <div class="controls-section">
         <div class="controls-title">Controls</div>
         <p>You can use <strong>mouse/touch</strong> or <strong>arrow keys</strong> to move around</p>
       </div>
-
       <div class="enemy-grid">
         <div class="enemy-item">
-          <div class="enemy-visual">
-            <div class="enemy-demo"></div>
-          </div>
-          <div>
-            <div class="enemy-points">+10 pts</div>
-            <div class="enemy-label">Normal</div>
-          </div>
+          <div class="enemy-visual"><div class="enemy-demo"></div></div>
+          <div><div class="enemy-points">+10 pts</div><div class="enemy-label">Normal</div></div>
         </div>
-        
         <div class="enemy-item">
-          <div class="enemy-visual">
-            <div class="special-enemy-demo"></div>
-          </div>
-          <div>
-            <div class="enemy-points">+30 pts</div>
-            <div class="enemy-label">Special</div>
-          </div>
+          <div class="enemy-visual"><div class="special-enemy-demo"></div></div>
+          <div><div class="enemy-points">+30 pts</div><div class="enemy-label">Special</div></div>
         </div>
-        
         <div class="enemy-item">
-          <div class="enemy-visual">
-            <div class="boss-enemy-demo"></div>
-          </div>
-          <div>
-            <div class="enemy-points">+50 pts</div>
-            <div class="enemy-label">Boss</div>
-          </div>
+          <div class="enemy-visual"><div class="boss-enemy-demo"></div></div>
+          <div><div class="enemy-points">+50 pts</div><div class="enemy-label">Boss</div></div>
         </div>
       </div>
-
-      <button id="readyBtn">👾 READY TO DEFEND! 👾</button>
+      <button id="readyBtn">🚀 READY TO DEFEND! 🚀</button>
     </div>
   </div>
 
-  <!-- Game Over Overlay -->
   <div id="gameOverOverlay">
     <div id="gameOverContent">
       <h1>GAME OVER</h1>
-      <p>My Portfolio was ruined by HAXORS!</p>
-      <p>Now I'LL Never Get That Job In Cyber Security!</p>
+      <p>Hackers Have Ruined My Portfolio!</p>
+      <p>Now I'll Never Get That Job In Cyber Security...</p>
+      <p>Can You Help Me Get That Job??</p>
       <p>Your final score: <span id="finalScore">0</span></p>
       <button id="restartBtn">Play Again</button>
     </div>
   </div>
 
   <button id="funModeBtn">Enter Fun Mode</button>
-
   <div id="text">Ian Ryan Smith - Portfolio</div>
-
-  <p>
-    Motivated and adaptable professional with a background in digital marketing, recruitment, and sales actively trying to pivot to cyber security. Exploring technology and applying skills through projects and certifications.
-  </p>
-
-  <section>
-    <h2>View My CV</h2>
-    <ul>
-      <li><a href="https://docs.google.com/document/d/17sufq0eM3QovPwR0BcW_YN1xdxzJYsTGO_HJaNaaT5g/edit?usp=sharing" target="_blank" rel="noopener">Click Here To View</a></li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Projects & Code</h2>
-    <ul>
-      <li><a href="https://github.com/illestonline" target="_blank" rel="noopener">My GitHub Profile</a></li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Online Learning & Certificates</h2>
-    <ul>
-      <li><a href="https://github.com/Illestonline/networking-notes/blob/main/Certifications.md" target="_blank" rel="noopener">View My Certificates</a></li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Contact</h2>
-    <ul>
-      <li>Email: <a href="mailto:ianryansmith@gmail.com">Click Here To Email Me</a></li>
-      <li>LinkedIn: <a href="https://www.linkedin.com/in/ian-smith-283410bb/" target="_blank" rel="noopener">Click Here To View</a></li>
-    </ul>
-  </section>
-
-  <!-- Car now displays a bigger little monster -->
+  <p>Motivated and adaptable professional with a background in digital marketing, recruitment, and sales actively trying to pivot to cyber security. Exploring technology and applying skills through projects and certifications.</p>
+  <section><h2>View My CV</h2><ul><li><a href="https://docs.google.com/document/d/17sufq0eM3QovPwR0BcW_YN1xdxzJYsTGO_HJaNaaT5g/edit?usp=sharing" target="_blank" rel="noopener">Click Here To View</a></li></ul></section>
+  <section><h2>Projects & Code</h2><ul><li><a href="https://github.com/illestonline" target="_blank" rel="noopener">My GitHub Profile</a></li></ul></section>
+  <section><h2>Online Learning & Certificates</h2><ul><li><a href="https://github.com/Illestonline/networking-notes/blob/main/Certifications.md" target="_blank" rel="noopener">View My Certificates</a></li></ul></section>
+  <section><h2>Contact</h2><ul><li>Email: <a href="mailto:ianryansmith@gmail.com">Click Here To Email Me</a></li><li>LinkedIn: <a href="https://www.linkedin.com/in/ian-smith-283410bb/" target="_blank" rel="noopener">Click Here To View</a></li></ul></section>
   <div id="car">👾</div>
 
-  <!-- [SCRIPT SECTION WOULD GO BELOW HERE -  -->
-
   <script>
- const car = document.getElementById('car');
-const text = document.getElementById('text');
-const funModeBtn = document.getElementById('funModeBtn');
-const gameUI = document.getElementById('gameUI');
-const scoreEl = document.getElementById('score');
-const gameOverOverlay = document.getElementById('gameOverOverlay');
-const finalScoreEl = document.getElementById('finalScore');
-const restartBtn = document.getElementById('restartBtn');
-// Add references to instruction elements
-const instructionsOverlay = document.getElementById('instructionsOverlay');
-const readyBtn = document.getElementById('readyBtn');
+    // Ensure DOM elements are accessible
+    const car = document.getElementById('car');
+    const text = document.getElementById('text');
+    const funModeBtn = document.getElementById('funModeBtn');
+    const gameUI = document.getElementById('gameUI');
+    const scoreEl = document.getElementById('score');
+    const gameOverOverlay = document.getElementById('gameOverOverlay');
+    const finalScoreEl = document.getElementById('finalScore');
+    const restartBtn = document.getElementById('restartBtn');
+    const instructionsOverlay = document.getElementById('instructionsOverlay');
+    const readyBtn = document.getElementById('readyBtn');
 
-let letters = [];
-let enemies = [];
-let particles = [];
-let funModeOn = false;
-let animationFrameId;
-let score = 0;
-let enemySpawnTimer = 0;
-let enemySpawnRate = 240; // frames between spawns (4 seconds at 60fps)
-let gameOver = false;
+    // Game state variables
+    let letters = [];
+    let enemies = [];
+    // let particles = []; 
+    let funModeOn = false;
+    let animationFrameId;
+    let score = 0;
+    let enemySpawnTimer = 0;
+    let enemySpawnRate = 240; 
+    let gameOver = false;
 
-// Wrap letters in #text and all h2 elements
-function wrapLetters(element) {
-  const content = element.textContent;
-  element.textContent = '';
-  let spans = [];
-  for (let char of content) {
-    const span = document.createElement('span');
-    span.textContent = char;
-    // Add class for spaces to make them visible
-    if (char === ' ') {
-      span.classList.add('space');
-    }
-    element.appendChild(span);
-    spans.push(span);
-  }
-  return spans;
-}
+    // Power-up variables
+    let powerUps = [];
+    let powerUpSpawnTimer = 0;
+    let powerUpSpawnRate = 1200; 
+    let activePowerUps = {}; 
 
-// Wrap main header letters
-letters = wrapLetters(text);
+    const powerUpTypes = {
+      empBlast:     { className: 'emp-powerup',     baseClass: 'powerup',   points: 0, beneficial: true,  icon: '⚡' },
+      speedBoost:   { className: 'speed-powerup',   baseClass: 'powerup',   points: 0, beneficial: true,  icon: '🚀' },
+      magnetMode:   { className: 'magnet-powerup',  baseClass: 'powerup',   points: 0, beneficial: true,  icon: '🧲' },
+      letterRegen:  { className: 'regen-powerup',   baseClass: 'powerup',   points: 0, beneficial: true,  icon: '💚' },
+      targetedBoss: { className: 'boss-ally-powerup', baseClass: 'powerup', points: 0, beneficial: true,  icon: '🛡️' },
+      rapidFire:     { className: 'rapidfire-powerdown', baseClass: 'powerdown', points: 0, beneficial: false, icon: '💥' },
+      explodingBoss: { className: 'exploding-boss-powerdown', baseClass: 'powerdown', points: 0, beneficial: false, icon: '💣' },
+      huntingBoss:   { className: 'boss-hunter-powerdown', baseClass: 'powerdown', points: 0, beneficial: false, icon: '🎯' }
+    };
 
-// Wrap all h2 letters and add to letters array
-const headings = document.querySelectorAll('h2');
-headings.forEach(h2 => {
-  const h2Letters = wrapLetters(h2);
-  letters = letters.concat(h2Letters);
-});
+    // Car movement variables
+    let carPos = { x: 20, y: window.innerHeight - 70 };
+    let baseSpeed = 5.5; // CHANGED
+    let currentSpeed = 5.5; // CHANGED
+    let maxSpeed = 9; // CHANGED
+    let velocity = { x: 0, y: 0 };
+    let keysPressed = new Set();
+    let accelerationTimer = 0;
+    let accelerationThreshold = 60; 
+    let particleSpawnTimer = 0; 
 
-// Car position and movement variables
-let carPos = { x: 20, y: window.innerHeight - 70 };
-let baseSpeed = 3;
-let currentSpeed = 3;
-let maxSpeed = 6;
-let velocity = { x: 0, y: 0 };
-let keysPressed = new Set();
-let accelerationTimer = 0;
-let accelerationThreshold = 60; // frames before acceleration starts (1 second at 60fps)
-let particleSpawnTimer = 0;
+    // Mouse/Touch control variables
+    let mousePos = { x: 0, y: 0 };
+    let lastMousePos = { x: 0, y: 0 };
+    let mouseVelocity = { x: 0, y: 0 };
+    let isMouseMoving = false;
+    let mouseMovementTimer = 0;
+    let mouseMomentumDecay = 0.95; 
+    let minMomentum = 0.1; 
+    let touchStartPos = { x: 0, y: 0 };
+    let touchCurrentPos = { x: 0, y: 0 };
+    let isTouching = false;
+    const directions = { ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 }, ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 } };
 
-// Mouse movement variables with momentum
-let mousePos = { x: 0, y: 0 };
-let lastMousePos = { x: 0, y: 0 };
-let mouseVelocity = { x: 0, y: 0 };
-let isMouseMoving = false;
-let mouseMovementTimer = 0;
-let mouseMomentumDecay = 0.95; // How quickly momentum fades (0.95 = 5% decay per frame)
-let minMomentum = 0.1; // Minimum momentum before stopping
-
-// Touch support variables
-let touchStartPos = { x: 0, y: 0 };
-let touchCurrentPos = { x: 0, y: 0 };
-let isTouching = false;
-
-// Directions object for arrow keys
-const directions = {
-  ArrowLeft: { x: -1, y: 0 },
-  ArrowRight: { x: 1, y: 0 },
-  ArrowUp: { x: 0, y: -1 },
-  ArrowDown: { x: 0, y: 1 }
-};
-
-// Particle management
-function createParticle() {
-  const particle = document.createElement('div');
-  particle.className = 'particle';
-  
-  // Spawn at car center with slight random offset
-  const carRect = car.getBoundingClientRect();
-  const carCenterX = carRect.left + carRect.width / 2;
-  const carCenterY = carRect.top + carRect.height / 2;
-  
-  particle.style.left = (carCenterX + (Math.random() - 0.5) * 20) + 'px';
-  particle.style.top = (carCenterY + (Math.random() - 0.5) * 20) + 'px';
-  
-  document.body.appendChild(particle);
-  particles.push(particle);
-  
-  // Remove particle after animation completes
-  setTimeout(() => {
-    particle.remove();
-    const index = particles.indexOf(particle);
-    if (index > -1) {
-      particles.splice(index, 1);
-    }
-  }, 800);
-}
-
-// Enemy management
-function createEnemy() {
-  const enemy = document.createElement('div');
-  
-  let enemyType = 'normal';
-  
-  // After 300 points, 10% chance for boss enemy (doubled from 5%)
-  if (score >= 300 && Math.random() < 0.10) {
-    enemyType = 'boss';
-  }
-  // After 100 points, 30% chance for special enemy (doubled from 15%, if not boss)
-  else if (score >= 100 && Math.random() < 0.30) {
-    enemyType = 'special';
-  }
-  
-  // Calculate content area width (like the section boxes)
-  const contentWidth = 800; // max-width of body
-  const screenWidth = window.innerWidth;
-  const availableWidth = Math.min(contentWidth, screenWidth - 40); // Account for margins
-  const leftMargin = (screenWidth - availableWidth) / 2;
-  
-  if (enemyType === 'boss') {
-    enemy.className = 'boss-enemy';
-    enemy.style.left = (leftMargin + Math.random() * (availableWidth - 25)) + 'px';
-  } else if (enemyType === 'special') {
-    enemy.className = 'special-enemy';
-    enemy.style.left = (leftMargin + Math.random() * (availableWidth - 7.5)) + 'px';
-  } else {
-    enemy.className = 'enemy';
-    enemy.style.left = (leftMargin + Math.random() * (availableWidth - 20)) + 'px';
-  }
-  
-  enemy.style.top = '-30px';
-  document.body.appendChild(enemy);
-  
-  // Base enemy speed calculation - reduced by 25%
-  let baseSpeed;
-  if (score < 150) {
-    baseSpeed = (0.5 + Math.random() * 0.5) * 0.75; // Reduced by 25%: 0.375-0.75
-  } else if (score < 400) {
-    const speedMultiplier = 1 + Math.min((score - 150) / 200, 1.5); // Gradually increase after 150 points
-    baseSpeed = (0.8 + Math.random() * 0.7) * speedMultiplier * 0.75; // Reduced by 25%
-  } else {
-    // After 400 points, gradually increase speed again
-    const speedMultiplier = 1 + Math.min((score - 150) / 200, 1.5);
-    const bonusSpeedMultiplier = 1 + Math.min((score - 400) / 300, 1.0); // Additional multiplier after 400
-    baseSpeed = (0.8 + Math.random() * 0.7) * speedMultiplier * bonusSpeedMultiplier * 0.75; // Still reduced by 25%
-  }
-  
-  // Boss enemies are slightly faster than special, special enemies are fast
-  if (enemyType === 'boss') {
-    baseSpeed *= 2.2; // Only slightly faster than special enemies
-  } else if (enemyType === 'special') {
-    baseSpeed *= 2;
-  }
-  
-  enemies.push({
-    element: enemy,
-    x: parseFloat(enemy.style.left),
-    y: -30,
-    speed: baseSpeed,
-    type: enemyType,
-    horizontalVelocity: 0, // Add horizontal movement capability
-    lastTextCollision: 0 // Track when enemy last hit text to prevent constant direction changes
-  });
-}
-
-function updateEnemies() {
-  enemies.forEach((enemy, index) => {
-    // Update vertical position (always falling)
-    enemy.y += enemy.speed;
-    
-    // Update horizontal position
-    enemy.x += enemy.horizontalVelocity;
-    
-    // Keep enemy within screen bounds horizontally
-    if (enemy.x <= 0 || enemy.x >= window.innerWidth - 20) {
-      enemy.horizontalVelocity *= -0.5; // Reverse and reduce horizontal velocity when hitting edges
-    }
-    enemy.x = Math.max(0, Math.min(window.innerWidth - 20, enemy.x));
-    
-    // Apply positions
-    enemy.element.style.top = enemy.y + 'px';
-    enemy.element.style.left = enemy.x + 'px';
-    
-    // Remove enemies that reached the bottom and decrease score
-    if (enemy.y > window.innerHeight) {
-      enemy.element.remove();
-      let penalty;
-      if (enemy.type === 'boss') {
-        penalty = -50; // Boss enemies cost 5x more
-      } else if (enemy.type === 'special') {
-        penalty = -30; // Special enemies cost 3x more
-      } else {
-        penalty = -10; // Normal penalty
+    // --- Initialization ---
+    function wrapLettersInSpans(element) {
+      const content = element.textContent;
+      element.textContent = '';
+      let spans = [];
+      for (let char of content) {
+        const span = document.createElement('span');
+        span.textContent = char;
+        if (char === ' ') { span.classList.add('space'); }
+        element.appendChild(span);
+        spans.push(span);
       }
-      enemies.splice(index, 1);
-      score = Math.max(0, score + penalty); // Add penalty (negative number)
-      scoreEl.textContent = 'Score: ' + score;
-      updateSpawnRate(); // Update spawn rate when score decreases
+      return spans;
     }
-  });
-}
-
-function checkEnemyCollisions() {
-  const carRect = car.getBoundingClientRect();
-  
-  enemies.forEach((enemy, index) => {
-    const enemyRect = enemy.element.getBoundingClientRect();
-    if (rectsOverlap(carRect, enemyRect)) {
-      // Enemy caught! Award points based on enemy type
-      let points;
-      if (enemy.type === 'boss') {
-        points = 50; // Boss enemies worth 5x points
-      } else if (enemy.type === 'special') {
-        points = 30; // Special enemies worth 3x points
-      } else {
-        points = 10; // Normal points
-      }
-      enemy.element.remove();
-      enemies.splice(index, 1);
-      score += points;
-      scoreEl.textContent = 'Score: ' + score;
-      updateSpawnRate(); // Update spawn rate when score increases
-    }
-  });
-}
-
-// Update spawn rate based on current score
-function updateSpawnRate() {
-  const scoreThreshold = Math.floor(score / 50);
-  let newSpawnRate = Math.max(90, 240 - (scoreThreshold * 20)); // Min 90 frames (1.5 seconds)
-  
-  // Add bonus enemies every 100 points after 200
-  if (score >= 200) {
-    const bonusEnemyTiers = Math.floor((score - 200) / 100);
-    const bonusReduction = bonusEnemyTiers * 15; // Additional 15 frame reduction per tier
-    newSpawnRate = Math.max(45, newSpawnRate - bonusReduction); // Min 45 frames (0.75 seconds)
-  }
-  
-  enemySpawnRate = newSpawnRate;
-}
-
-function rectsOverlap(r1, r2) {
-  return !(r2.left > r1.right || r2.right < r1.left || r2.top > r1.bottom || r2.bottom < r1.top);
-}
-
-// Check if all knockable letters are destroyed
-function checkGameOver() {
-  if (gameOver) return; // Already game over
-  
-  // Count visible letters (not destroyed and not spaces)
-  const visibleLetters = letters.filter(letter => 
-    !letter.classList.contains('destroyed') && 
-    !letter.classList.contains('space')
-  );
-  
-  if (visibleLetters.length === 0) {
-    gameOver = true;
-    finalScoreEl.textContent = score;
-    gameOverOverlay.style.display = 'flex';
-    // Stop enemy spawning
-    enemySpawnTimer = 0;
-  }
-}
-
-// Knock over letter with bounce and wobble - UPDATED to handle enemy destruction
-function knockOverLetter(letter, impactX, impactY, force, hitByEnemy = false) {
-  if (letter.dataset.knocked === 'true' || letter.classList.contains('destroyed')) return;
-  letter.dataset.knocked = 'true';
-
-  if (hitByEnemy) {
-    // Enemy hit - destroy the letter instead of bouncing
-    letter.classList.add('destroyed');
-    letter.dataset.knocked = 'false'; // Reset knocked state since it's destroyed
     
-    // Check for game over after a short delay to let the animation start
-    setTimeout(checkGameOver, 100);
-    return;
-  }
+    function initializeLetters() {
+        letters = wrapLettersInSpans(text);
+        const headings = document.querySelectorAll('h2');
+        headings.forEach(h2 => {
+          const h2Letters = wrapLettersInSpans(h2);
+          letters = letters.concat(h2Letters);
+        });
+    }
+    initializeLetters(); 
 
-  // Car hit - normal bounce behavior
-  let moveX = (impactX > 0 ? 1 : -1) * 40 * force;
-  let moveY = (impactY > 0 ? 1 : -1) * 40 * force;
-  let rotate = (impactX !== 0 ? moveX : moveY) * 0.5;
+    function rectsOverlap(r1, r2) { 
+        if (!r1 || !r2) return false; 
+        return !(r2.left > r1.right || r2.right < r1.left || r2.top > r1.bottom || r2.bottom < r1.top); 
+    }
 
-  letter.style.transition = 'transform 0.1s ease-out';
-  letter.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${rotate}deg)`;
+    // --- Game Entities ---
+    function createParticle() {
+        if (!car) return; 
 
-  setTimeout(() => {
-    letter.style.transition = 'transform 0.3s ease-in';
-    letter.style.transform = 'translate(0, 0) rotate(0deg)';
-    // Add wobble effect after return
-    setTimeout(() => {
-      letter.style.transition = 'transform 0.15s ease-in-out';
-      letter.style.transform = 'rotate(12deg)';
-      setTimeout(() => {
-        letter.style.transform = 'rotate(-8deg)';
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+      
+        const carRect = car.getBoundingClientRect();
+        const spawnX = carRect.left + carRect.width / 2 + (Math.random() - 0.5) * (carRect.width * 0.6);
+        const spawnY = carRect.top + carRect.height * 0.8; 
+      
+        particle.style.left = spawnX + 'px';
+        particle.style.top = spawnY + 'px';
+      
+        if (activePowerUps.speedBoost && activePowerUps.speedBoost.active) {
+            particle.style.backgroundColor = '#00FF00'; 
+            particle.style.boxShadow = '0 0 5px #00FF00';
+        } else {
+            particle.style.backgroundColor = '#bb86fc'; 
+            particle.style.boxShadow = '0 0 5px #bb86fc';
+        }
+
+        document.body.appendChild(particle);
+      
         setTimeout(() => {
-          letter.style.transform = 'rotate(5deg)';
-          setTimeout(() => {
-            letter.style.transform = 'rotate(0deg)';
-            letter.dataset.knocked = 'false';
-          }, 100);
-        }, 100);
-      }, 100);
-    }, 350);
-  }, 100);
-}
+            particle.remove();
+        }, 800); 
+    }
 
-// Calculate normalized velocity for movement (updated for momentum-based mouse control and touch)
-function updateVelocity() {
-  let dirX = 0;
-  let dirY = 0;
-  let usingKeyboard = false;
-  
-  // Check if any movement keys are pressed (keyboard has priority)
-  if (keysPressed.has('ArrowLeft')) { dirX -= 1; usingKeyboard = true; }
-  if (keysPressed.has('ArrowRight')) { dirX += 1; usingKeyboard = true; }
-  if (keysPressed.has('ArrowUp')) { dirY -= 1; usingKeyboard = true; }
-  if (keysPressed.has('ArrowDown')) { dirY += 1; usingKeyboard = true; }
-  
-  // If no keyboard input, check for touch or mouse control
-  if (!usingKeyboard) {
-    const carCenterX = carPos.x + car.offsetWidth / 2;
-    const carCenterY = carPos.y + car.offsetHeight / 2;
-    
-    let targetX, targetY;
-    
-    if (isTouching) {
-      // Touch control - use touch position
-      targetX = touchCurrentPos.x;
-      targetY = touchCurrentPos.y;
-    } else if (isMouseMoving && mouseMovementTimer > 0) {
-      // Mouse control - use mouse position
-      targetX = mousePos.x;
-      targetY = mousePos.y;
+    function createExplosionEffect(x, y) {
+        // console.error("!!! createExplosionEffect CALLED with x:", x, "y:", y); 
+        const explosionDiv = document.createElement('div');
+        explosionDiv.className = 'explosion-effect'; 
+        
+        explosionDiv.style.left = (x - 40) + 'px'; 
+        explosionDiv.style.top = (y - 40) + 'px';  
+        
+        document.body.appendChild(explosionDiv);
+
+        setTimeout(() => {
+            explosionDiv.remove();
+        }, 1000); 
     }
-    
-    if (targetX !== undefined && targetY !== undefined) {
-      const dx = targetX - carCenterX;
-      const dy = targetY - carCenterY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
+
+
+    function createEnemy() {
+      const enemyEl = document.createElement('div');
+      let enemyType = 'normal';
+      if (score >= 300 && Math.random() < 0.10) { enemyType = 'boss'; }
+      else if (score >= 100 && Math.random() < 0.30) { enemyType = 'special'; }
       
-      // Only move if target is more than 10 pixels away (dead zone)
-      if (distance > 10) {
-        dirX = dx / distance;
-        dirY = dy / distance;
-        
-        // Scale movement based on distance (closer = slower)
-        const speedScale = Math.min(distance / 100, 1);
-        dirX *= speedScale;
-        dirY *= speedScale;
-        
-        // Update mouse velocity for momentum (only for mouse, not touch)
-        if (!isTouching) {
-          mouseVelocity.x = dirX;
-          mouseVelocity.y = dirY;
-        }
-      }
-    }
-    
-    // Check for momentum (only when not touching)
-    if (!isTouching) {
-      const momentumMagnitude = Math.sqrt(mouseVelocity.x * mouseVelocity.x + mouseVelocity.y * mouseVelocity.y);
+      const contentWidth = 800; 
+      const screenWidth = window.innerWidth;
+      const availableWidth = Math.min(contentWidth, screenWidth - 40); 
+      const leftMargin = (screenWidth - availableWidth) / 2;
       
-      if (momentumMagnitude > minMomentum) {
-        // Use momentum if we have it and no active input
-        if (!isMouseMoving || mouseMovementTimer <= 0) {
-          dirX = mouseVelocity.x;
-          dirY = mouseVelocity.y;
-        }
-        
-        // Always apply decay to momentum
-        mouseVelocity.x *= mouseMomentumDecay;
-        mouseVelocity.y *= mouseMomentumDecay;
+      let enemyWidth;
+      if (enemyType === 'boss') {
+        enemyEl.className = 'boss-enemy'; enemyWidth = 18;
+      } else if (enemyType === 'special') {
+        enemyEl.className = 'special-enemy'; enemyWidth = 6;
       } else {
-        // Stop momentum when it gets too small
-        mouseVelocity.x = 0;
-        mouseVelocity.y = 0;
+        enemyEl.className = 'enemy'; enemyWidth = 15;
       }
-    }
-  } else {
-    // Reset mouse momentum when using keyboard
-    mouseVelocity.x = 0;
-    mouseVelocity.y = 0;
-  }
-  
-  // Normalize diagonal movement for keyboard only
-  if (usingKeyboard && dirX !== 0 && dirY !== 0) {
-    const magnitude = Math.sqrt(dirX * dirX + dirY * dirY);
-    dirX /= magnitude;
-    dirY /= magnitude;
-  }
-  
-  // Apply current speed
-  velocity.x = dirX * currentSpeed;
-  velocity.y = dirY * currentSpeed;
-  
-  // Handle acceleration
-  if (dirX !== 0 || dirY !== 0) {
-    accelerationTimer++;
-    if (accelerationTimer >= accelerationThreshold) {
-      // Smooth acceleration from base speed to max speed
-      if (currentSpeed < maxSpeed) {
-        currentSpeed = Math.min(maxSpeed, currentSpeed + 0.1);
-      }
-    }
-  } else {
-    // Reset when not moving
-    accelerationTimer = 0;
-    currentSpeed = baseSpeed;
-  }
-}
-
-// Function to start the actual game (extracted from the button click handler)
-function startFunMode() {
-  funModeOn = true;
-  funModeBtn.textContent = 'Exit Fun Mode';
-  gameUI.style.display = 'block'; // Show game UI
-  car.style.display = 'block'; // Show the car
-  resetGame(); // Reset game state when entering fun mode
-  animationFrameId = requestAnimationFrame(update);
-}
-
-// Reset game state
-function resetGame() {
-  // Reset game variables
-  gameOver = false;
-  score = 0;
-  enemySpawnRate = 240;
-  enemySpawnTimer = 0;
-  scoreEl.textContent = 'Score: 0';
-  
-  // Remove all enemies
-  enemies.forEach(enemy => enemy.element.remove());
-  enemies = [];
-  
-  // Remove all particles
-  particles.forEach(particle => particle.remove());
-  particles = [];
-  
-  // Reset all letters - remove destroyed class and reset transforms
-  letters.forEach(letter => {
-    letter.classList.remove('destroyed');
-    letter.style.transition = '';
-    letter.style.transform = '';
-    letter.dataset.knocked = 'false';
-  });
-  
-  // Reset movement state
-  keysPressed.clear();
-  velocity.x = 0;
-  velocity.y = 0;
-  currentSpeed = baseSpeed;
-  accelerationTimer = 0;
-  particleSpawnTimer = 0;
-  
-  // Reset mouse state and momentum
-  isMouseMoving = false;
-  mouseMovementTimer = 0;
-  mouseVelocity.x = 0;
-  mouseVelocity.y = 0;
-  
-  // Reset touch state
-  isTouching = false;
-  
-  // Reset car position
-  carPos.x = 20;
-  carPos.y = window.innerHeight - 70;
-  car.style.left = carPos.x + 'px';
-  car.style.top = carPos.y + 'px';
-  
-  // Hide game over overlay
-  gameOverOverlay.style.display = 'none';
-}
-
-// Main update loop to move car and check collisions
-function update() {
-  if (!funModeOn || gameOver) return;
-
-  // Update mouse movement timer
-  if (isMouseMoving) {
-    mouseMovementTimer--;
-    if (mouseMovementTimer <= 0) {
-      isMouseMoving = false;
-    }
-  }
-
-  // Update velocity based on current input (keyboard, mouse with momentum, or touch)
-  updateVelocity();
-
-  carPos.x += velocity.x;
-  carPos.y += velocity.y;
-
-  // Constrain car inside viewport
-  carPos.x = Math.max(0, Math.min(window.innerWidth - car.offsetWidth, carPos.x));
-  carPos.y = Math.max(0, Math.min(window.innerHeight - car.offsetHeight, carPos.y));
-
-  car.style.left = carPos.x + 'px';
-  car.style.top = carPos.y + 'px';
-
-  // Spawn particles when at full speed and moving
-  if (currentSpeed >= maxSpeed && (velocity.x !== 0 || velocity.y !== 0)) {
-    particleSpawnTimer++;
-    if (particleSpawnTimer >= 3) { // Spawn every 3 frames at full speed
-      createParticle();
-      particleSpawnTimer = 0;
-    }
-  } else {
-    particleSpawnTimer = 0;
-  }
-
-  // Update enemies
-  updateEnemies();
-  checkEnemyCollisions();
-
-  // Spawn enemies (only if game is not over)
-  if (!gameOver) {
-    enemySpawnTimer++;
-    if (enemySpawnTimer >= enemySpawnRate) {
-      createEnemy();
-      enemySpawnTimer = 0;
-    }
-  }
-
-  // Check letter collisions (original functionality for car)
-  const carRect = car.getBoundingClientRect();
-  letters.forEach(letter => {
-    if (letter.classList.contains('destroyed')) return; // Skip destroyed letters
-    
-    const letterRect = letter.getBoundingClientRect();
-    if (rectsOverlap(carRect, letterRect)) {
-      const dx = letterRect.left + letterRect.width / 2 - (carRect.left + carRect.width / 2);
-      const dy = letterRect.top + letterRect.height / 2 - (carRect.top + carRect.height / 2);
-      knockOverLetter(letter, dx, dy, currentSpeed >= maxSpeed ? 2 : 1, false); // false = hit by car
-    }
-  });
-
-  // Check enemy-letter collisions - enemies destroy letters
-  const currentTime = Date.now();
-  enemies.forEach((enemy, enemyIndex) => {
-    const enemyRect = enemy.element.getBoundingClientRect();
-    letters.forEach(letter => {
-      if (letter.classList.contains('destroyed')) return; // Skip already destroyed letters
+      enemyEl.style.left = (leftMargin + Math.random() * (availableWidth - enemyWidth)) + 'px';
+      enemyEl.style.top = '-30px';
+      document.body.appendChild(enemyEl);
       
-      const letterRect = letter.getBoundingClientRect();
-      if (rectsOverlap(enemyRect, letterRect)) {
-        // Only process collision if enough time has passed since last collision (prevent spam)
-        if (currentTime - enemy.lastTextCollision > 200) { // 200ms cooldown
-          const dx = letterRect.left + letterRect.width / 2 - (enemyRect.left + enemyRect.width / 2);
-          const dy = letterRect.top + letterRect.height / 2 - (enemyRect.top + enemyRect.height / 2);
-          
-          // Force based on enemy speed and type for letter knock-over/destruction
-          let force = enemy.speed * 0.3;
-          if (enemy.type === 'boss') {
-            force *= 1.5; // Boss enemies have stronger impact
-          } else if (enemy.type === 'special') {
-            force *= 1.2; // Special enemies have medium impact
-          }
-          
-          // Enemy destroys the letter instead of just knocking it over
-          knockOverLetter(letter, dx, dy, force, true); // true = hit by enemy
-          
-          // Add random horizontal velocity change for enemy
-          const randomDirection = (Math.random() - 0.5) * 2; // Random value between -1 and 1
-          const velocityChange = randomDirection * (1 + Math.random() * 2); // Random velocity between -3 and 3
-          enemy.horizontalVelocity += velocityChange;
-          
-          // Cap horizontal velocity to prevent enemies from moving too fast horizontally
-          const maxHorizontalSpeed = enemy.speed * 0.8;
-          enemy.horizontalVelocity = Math.max(-maxHorizontalSpeed, Math.min(maxHorizontalSpeed, enemy.horizontalVelocity));
-          
-          // Update last collision time
-          enemy.lastTextCollision = currentTime;
+      let baseEnemySpeed; 
+      if (score < 150) { baseEnemySpeed = (0.5 + Math.random() * 0.5) * 0.75; }
+      else if (score < 400) {
+        const speedMultiplier = 1 + Math.min((score - 150) / 200, 1.5); 
+        baseEnemySpeed = (0.8 + Math.random() * 0.7) * speedMultiplier * 0.75; 
+      } else {
+        const speedMultiplier = 1 + Math.min((score - 150) / 200, 1.5);
+        const bonusSpeedMultiplier = 1 + Math.min((score - 400) / 300, 1.0); 
+        baseEnemySpeed = (0.8 + Math.random() * 0.7) * speedMultiplier * bonusSpeedMultiplier * 0.75; 
+      }
+      if (enemyType === 'boss') { baseEnemySpeed *= 2.2; }
+      else if (enemyType === 'special') { baseEnemySpeed *= 2; }
+      
+      const newEnemyData = {
+        element: enemyEl, x: parseFloat(enemyEl.style.left), y: -30,
+        speed: baseEnemySpeed, type: enemyType, horizontalVelocity: 0, lastTextCollision: 0 
+      };
+      enemies.push(newEnemyData); 
+
+      if (activePowerUps.huntingBoss && newEnemyData.type === 'boss') {
+          newEnemyData.huntingMode = true;
+      }
+    }
+
+    function createPowerUp() {
+      const powerUpEl = document.createElement('div'); 
+      let powerUpTypeKey; 
+      const destroyedLettersCount = letters.filter(l => l.classList.contains('destroyed') && !l.classList.contains('space')).length;
+      const totalLettersCount = letters.filter(l => !l.classList.contains('space')).length;
+      
+      if (totalLettersCount > 0 && destroyedLettersCount >= 5 && Math.random() < 0.3) { 
+        powerUpTypeKey = 'letterRegen';
+      } 
+      else if ((totalLettersCount > 0 && destroyedLettersCount / totalLettersCount > 0.7 && Math.random() < 0.7) || Math.random() < 0.5) {
+        const beneficialTypes = ['empBlast', 'speedBoost', 'magnetMode', 'targetedBoss'];
+        powerUpTypeKey = beneficialTypes[Math.floor(Math.random() * beneficialTypes.length)];
+      }
+      else {
+        const harmfulTypes = ['rapidFire', 'explodingBoss', 'huntingBoss'];
+        powerUpTypeKey = harmfulTypes[Math.floor(Math.random() * harmfulTypes.length)];
+      }
+      
+      const typeData = powerUpTypes[powerUpTypeKey];
+      if (!typeData) { 
+          console.error("Undefined powerUpTypeKey:", powerUpTypeKey);
+          return; 
+      }
+      powerUpEl.className = `${typeData.baseClass} ${typeData.className}`; 
+      powerUpEl.setAttribute('data-type', powerUpTypeKey);
+      
+      const contentWidth = 800;
+      const screenWidth = window.innerWidth;
+      const availableWidth = Math.min(contentWidth, screenWidth - 40);
+      const leftMargin = (screenWidth - availableWidth) / 2;
+      
+      const powerUpWidth = powerUpEl.classList.contains('boss-ally-powerup') ? 24 : 
+                           powerUpEl.classList.contains('exploding-boss-powerdown') ? 22 : 
+                           powerUpEl.classList.contains('powerdown') ? 18 : 20;
+
+      powerUpEl.style.left = (leftMargin + Math.random() * (availableWidth - powerUpWidth)) + 'px';
+      powerUpEl.style.top = '-40px'; 
+      
+      document.body.appendChild(powerUpEl);
+      
+      powerUps.push({
+        element: powerUpEl, x: parseFloat(powerUpEl.style.left), y: -40,
+        speed: 1 + Math.random() * 0.5, type: powerUpTypeKey 
+      });
+    }
+
+    // --- Update Logic ---
+    function updatePowerUps() {
+      for (let i = powerUps.length - 1; i >= 0; i--) {
+        const powerUp = powerUps[i];
+        powerUp.y += powerUp.speed;
+        if (powerUp.element) { 
+            powerUp.element.style.top = powerUp.y + 'px';
         }
+        if (powerUp.y > window.innerHeight) {
+          if (powerUp.element) powerUp.element.remove();
+          powerUps.splice(i, 1);
+        }
+      }
+    }
+
+    function updateEnemies() {
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        const enemy = enemies[i];
+        if (!enemy || !enemy.element) { 
+            enemies.splice(i, 1);
+            continue;
+        }
+
+        if (activePowerUps.magnetMode && activePowerUps.magnetMode.active) {
+          const carRect = car.getBoundingClientRect(); 
+          const carCenterX = carRect.left + carRect.width / 2;
+          const carCenterY = carRect.top + carRect.height / 2;
+          const dx = carCenterX - (enemy.x + enemy.element.offsetWidth / 2); 
+          const dy = carCenterY - (enemy.y + enemy.element.offsetHeight / 2); 
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 200 && distance > 10) { 
+            const attractionForce = 3.0; // INCREASED MAGNET STRENGTH
+            enemy.x += (dx / distance) * attractionForce;
+            enemy.y += (dy / distance) * attractionForce;
+          }
+        }
+        
+        if (enemy.huntingMode && enemy.type === 'boss') {
+          let nearestLetter = null;
+          let nearestDistance = Infinity;
+          letters.forEach(letter => { 
+            if (!letter.classList.contains('destroyed') && !letter.classList.contains('space')) {
+              const letterRect = letter.getBoundingClientRect();
+              const letterCenterX = letterRect.left + letterRect.width / 2;
+              const letterCenterY = letterRect.top + letterRect.height / 2;
+              const dxToLetter = letterCenterX - (enemy.x + enemy.element.offsetWidth / 2);
+              const dyToLetter = letterCenterY - (enemy.y + enemy.element.offsetHeight / 2);
+              const distToLetter = Math.sqrt(dxToLetter * dxToLetter + dyToLetter * dyToLetter);
+              if (distToLetter < nearestDistance) {
+                nearestDistance = distToLetter;
+                nearestLetter = { x: letterCenterX, y: letterCenterY };
+              }
+            }
+          });
+          if (nearestLetter && nearestDistance > 10) { 
+            const dxToTarget = nearestLetter.x - (enemy.x + enemy.element.offsetWidth / 2);
+            const dyToTarget = nearestLetter.y - (enemy.y + enemy.element.offsetHeight / 2);
+            enemy.horizontalVelocity = (dxToTarget / nearestDistance) * enemy.speed * 0.6; 
+            enemy.y += (dyToTarget / nearestDistance) * enemy.speed * 0.4; 
+          } else {
+             enemy.horizontalVelocity *= 0.95; 
+          }
+        }
+        
+        enemy.y += enemy.speed;
+        enemy.x += enemy.horizontalVelocity;
+        
+        const enemyWidth = enemy.element.offsetWidth;
+        if (enemy.x <= 0 || enemy.x >= window.innerWidth - enemyWidth) {
+          enemy.horizontalVelocity *= -0.5; 
+        }
+        enemy.x = Math.max(0, Math.min(window.innerWidth - enemyWidth, enemy.x));
+        
+        enemy.element.style.top = enemy.y + 'px';
+        enemy.element.style.left = enemy.x + 'px';
+        
+        if (enemy.y > window.innerHeight) {
+          enemy.element.remove();
+          let penalty = (enemy.type === 'boss') ? -50 : (enemy.type === 'special') ? -30 : -10;
+          enemies.splice(i, 1); 
+          score = Math.max(0, score + penalty); 
+          if (scoreEl) scoreEl.textContent = 'Score: ' + score;
+          updateSpawnRate(); 
+        }
+      }
+    }
+    
+    function cleanupMarkedEntities() { 
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            if (enemies[i].toBeRemoved) {
+                if (enemies[i].element) enemies[i].element.remove();
+                enemies.splice(i, 1);
+            }
+        }
+    }
+
+    // --- Collision Detection ---
+    function checkEnemyCollisions() { 
+        if (!car) return; 
+        const carRect = car.getBoundingClientRect();
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            const enemy = enemies[i];
+            if (!enemy || !enemy.element) continue;
+
+            const enemyRect = enemy.element.getBoundingClientRect();
+            if (rectsOverlap(carRect, enemyRect)) {
+                let points = (enemy.type === 'boss') ? 50 : (enemy.type === 'special') ? 30 : 10;
+                if (activePowerUps.targetedBoss && activePowerUps.targetedBoss.active && enemy.type === 'boss') { 
+                    points = 100; 
+                    // console.log("Beneficial Boss collected!");
+                    delete activePowerUps.targetedBoss; 
+                }
+                enemy.element.remove();
+                enemies.splice(i, 1);
+                score += points;
+                if (scoreEl) scoreEl.textContent = 'Score: ' + score;
+                updateSpawnRate();
+            }
+        }
+    }
+
+    function checkPowerUpCollisions() {
+      if (!car) return; 
+      const carRect = car.getBoundingClientRect();
+      for (let i = powerUps.length - 1; i >= 0; i--) {
+        const powerUp = powerUps[i];
+        if (!powerUp.element) continue; 
+
+        const powerUpRect = powerUp.element.getBoundingClientRect();
+        if (rectsOverlap(carRect, powerUpRect)) {
+          powerUp.element.remove();
+          powerUps.splice(i, 1);
+          activatePowerUp(powerUp.type); 
+        }
+      }
+    }
+    
+    function checkLetterCollisions() {
+        const currentTime = Date.now();
+        const carRect = car ? car.getBoundingClientRect() : null;
+
+        if (carRect) {
+            letters.forEach(letter => {
+                if (letter.classList.contains('destroyed') || letter.dataset.knocked === 'true' || letter.dataset.isBeingDestroyed === 'true') return;
+                const letterRect = letter.getBoundingClientRect();
+                if (rectsOverlap(carRect, letterRect)) {
+                    const dx = letterRect.left + letterRect.width / 2 - (carRect.left + carRect.width / 2);
+                    const dy = letterRect.top + letterRect.height / 2 - (carRect.top + carRect.height / 2);
+                    knockOverLetter(letter, dx, dy, currentSpeed >= maxSpeed ? 2 : 1, false);
+                }
+            });
+        }
+
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            const enemy = enemies[i];
+            if (!enemy || !enemy.element) continue; 
+            
+            if (activePowerUps.targetedBoss && activePowerUps.targetedBoss.active && enemy.type === 'boss') { 
+                continue; 
+            }
+            const enemyRect = enemy.element.getBoundingClientRect();
+            letters.forEach(letter => {
+                if (letter.classList.contains('destroyed') || letter.dataset.isBeingDestroyed === 'true') return;
+                const letterRect = letter.getBoundingClientRect();
+                if (rectsOverlap(enemyRect, letterRect)) {
+                    if (currentTime - (enemy.lastTextCollision || 0) > 200) {
+                        const dx = letterRect.left + letterRect.width / 2 - (enemyRect.left + enemyRect.width / 2);
+                        const dy = letterRect.top + letterRect.height / 2 - (enemyRect.top + enemyRect.height / 2);
+                        let force = enemy.speed * 0.3;
+                        if (enemy.type === 'boss') force *= 1.5; else if (enemy.type === 'special') force *= 1.2;
+                        
+                        knockOverLetter(letter, dx, dy, force, true, enemy); 
+                        
+                        const randomDirection = (Math.random() - 0.5) * 2;
+                        const velocityChange = randomDirection * (1 + Math.random() * 2);
+                        enemy.horizontalVelocity += velocityChange;
+                        const maxHorizontalSpeed = enemy.speed * 0.8;
+                        enemy.horizontalVelocity = Math.max(-maxHorizontalSpeed, Math.min(maxHorizontalSpeed, enemy.horizontalVelocity));
+                        enemy.lastTextCollision = currentTime;
+                    }
+                }
+            });
+        }
+    }
+
+    function knockOverLetter(letter, impactX, impactY, force, hitByEnemy = false, hittingEnemy = null) { 
+        if (letter.classList.contains('destroyed') || letter.dataset.isBeingDestroyed === 'true') {
+            return;
+        }
+        if (letter.dataset.knocked === 'true' && !hitByEnemy && letter.classList.contains('letter-hit')) {
+            return;
+        }
+
+        if (hitByEnemy) {
+            letter.dataset.isBeingDestroyed = 'true'; 
+
+            letter.style.transition = 'none';
+            letter.style.transform = 'none';
+            void letter.offsetWidth; 
+
+            if (activePowerUps.explodingBoss && activePowerUps.explodingBoss.active && hittingEnemy && hittingEnemy.type === 'boss') {
+                // console.log("!!! EXPLODING BOSS IS TRIGGERING LETTER DESTRUCTION !!!", hittingEnemy);
+                letter.classList.add('letter-hit'); 
+                letter.style.opacity = '1'; 
+                letter.style.transform = 'scale(1.3) rotate(' + (Math.random() * 60 - 30) + 'deg)'; 
+
+                setTimeout(() => {
+                    letter.classList.remove('letter-hit');
+                    letter.classList.add('destroyed'); 
+                    setTimeout(() => {
+                        if(letter) letter.style.display = 'none';
+                        letter.dataset.isBeingDestroyed = 'false'; 
+                    }, 600); 
+                }, 50); 
+
+                if (hittingEnemy && hittingEnemy.element) {
+                    hittingEnemy.toBeRemoved = true;
+                    const bossRect = hittingEnemy.element.getBoundingClientRect();
+                    const explosionX = bossRect.left + bossRect.width / 2;
+                    const explosionY = bossRect.top + bossRect.height / 2;
+                    createExplosionEffect(explosionX, explosionY);
+                }
+                delete activePowerUps.explodingBoss;
+            } else {
+                letter.classList.add('letter-hit'); 
+                
+                setTimeout(() => {
+                    letter.classList.remove('letter-hit');
+                    letter.classList.add('destroyed'); 
+                    setTimeout(() => {
+                        letter.dataset.isBeingDestroyed = 'false'; 
+                    }, 600);  
+                }, 150); 
+            }
+
+            letter.dataset.knocked = 'false'; 
+            return;
+        }
+
+        // --- Car Hit Logic ---
+        if (letter.dataset.isBeingDestroyed === 'true') return; 
+
+        letter.dataset.knocked = 'true';
+        let moveX = (impactX > 0 ? 1 : -1) * 40 * force;
+        let moveY = (impactY > 0 ? 1 : -1) * 40 * force;
+        let rotate = (impactX !== 0 ? moveX : moveY) * 0.5;
+        
+        letter.style.transition = 'transform 0.1s ease-out';
+        letter.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${rotate}deg)`;
+
+        setTimeout(() => {
+            if (letter.dataset.isBeingDestroyed === 'true') return; 
+            letter.style.transition = 'transform 0.3s ease-in';
+            letter.style.transform = 'translate(0, 0) rotate(0deg)';
+            setTimeout(() => {
+                if (letter.dataset.isBeingDestroyed === 'true') return;
+                letter.style.transition = 'transform 0.15s ease-in-out';
+                letter.style.transform = 'rotate(12deg)';
+                setTimeout(() => {
+                    if (letter.dataset.isBeingDestroyed === 'true') return;
+                    letter.style.transform = 'rotate(-8deg)';
+                    setTimeout(() => {
+                        if (letter.dataset.isBeingDestroyed === 'true') return;
+                        letter.style.transform = 'rotate(5deg)';
+                        setTimeout(() => {
+                            if (letter.dataset.isBeingDestroyed === 'true') return;
+                            letter.style.transform = 'rotate(0deg)';
+                            letter.dataset.knocked = 'false';
+                        }, 100);
+                    }, 100);
+                }, 100);
+            }, 100); 
+        }, 100);
+    }
+    
+    // --- Power-up Activation ---
+    function activatePowerUp(typeKey) {
+      // console.log("Activating power-up:", typeKey); 
+      if (activePowerUps[typeKey] && activePowerUps[typeKey].timeoutId) {
+        clearTimeout(activePowerUps[typeKey].timeoutId);
+      }
+
+      switch(typeKey) {
+        case 'empBlast':
+          enemies.forEach(enemy => { 
+            if (!enemy.originalSpeed) enemy.originalSpeed = enemy.speed; 
+            enemy.speed *= 0.3;
+            if(enemy.element) enemy.element.classList.add('enemy-slowed'); 
+          });
+          activePowerUps.empBlast = { active: true };
+          const empFlashDiv = document.createElement('div');
+          empFlashDiv.className = 'emp-flash';
+          document.body.appendChild(empFlashDiv);
+          setTimeout(() => empFlashDiv.remove(), 500); 
+
+          activePowerUps.empBlast.timeoutId = setTimeout(() => {
+            enemies.forEach(enemy => { 
+              if (enemy.originalSpeed) {
+                enemy.speed = enemy.originalSpeed;
+                delete enemy.originalSpeed;
+                if(enemy.element) enemy.element.classList.remove('enemy-slowed'); 
+              }
+            });
+            delete activePowerUps.empBlast;
+          }, 5000);
+          break;
+          
+        case 'speedBoost':
+          const originalMaxSpeedForBoost = maxSpeed; // Use a local const
+          maxSpeed *= 2; 
+          currentSpeed = Math.min(currentSpeed * 1.5, maxSpeed); 
+          if(car) car.classList.add('player-speed-boost');
+          activePowerUps.speedBoost = { active: true, originalMaxSpeed: originalMaxSpeedForBoost }; 
+          activePowerUps.speedBoost.timeoutId = setTimeout(() => {
+            if (activePowerUps.speedBoost) { 
+                maxSpeed = activePowerUps.speedBoost.originalMaxSpeed; 
+                currentSpeed = Math.min(currentSpeed, maxSpeed); 
+                if(car) car.classList.remove('player-speed-boost');
+                delete activePowerUps.speedBoost;
+            }
+          }, 8000);
+          break;
+          
+        case 'magnetMode':
+          activePowerUps.magnetMode = { active: true };
+          if(car) car.classList.add('player-magnet-mode');
+          activePowerUps.magnetMode.timeoutId = setTimeout(() => {
+            if(car) car.classList.remove('player-magnet-mode');
+            delete activePowerUps.magnetMode;
+          }, 10000);
+          break;
+          
+        case 'letterRegen':
+          const destroyedLetters = letters.filter(l => l.classList.contains('destroyed') && !l.classList.contains('space'));
+          let regenCount = Math.min(Math.floor(Math.random() * 5) + 1, destroyedLetters.length);
+          for (let i = destroyedLetters.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [destroyedLetters[i], destroyedLetters[j]] = [destroyedLetters[j], destroyedLetters[i]];
+          }
+          for (let i = 0; i < regenCount; i++) {
+            if (destroyedLetters[i]) {
+                const letter = destroyedLetters[i];
+                letter.classList.remove('destroyed');
+                letter.style.opacity = '0'; 
+                letter.style.display = ''; 
+                void letter.offsetWidth; 
+                letter.style.transition = 'opacity 0.5s ease-in';
+                letter.style.opacity = '1';
+            }
+          }
+          break;
+          
+        case 'targetedBoss': 
+          activePowerUps.targetedBoss = { active: true };
+          activePowerUps.targetedBoss.timeoutId = setTimeout(() => delete activePowerUps.targetedBoss, 30000);
+          break;
+          
+        case 'rapidFire': 
+          const originalSpawnRate = enemySpawnRate;
+          enemySpawnRate = Math.max(30, enemySpawnRate * 0.3); 
+          activePowerUps.rapidFire = { active: true, originalSpawnRate: originalSpawnRate };
+          activePowerUps.rapidFire.timeoutId = setTimeout(() => {
+            if (activePowerUps.rapidFire) { 
+                enemySpawnRate = activePowerUps.rapidFire.originalSpawnRate;
+                delete activePowerUps.rapidFire;
+            }
+          }, 15000);
+          break;
+          
+        case 'explodingBoss': 
+          activePowerUps.explodingBoss = { active: true };
+          activePowerUps.explodingBoss.timeoutId = setTimeout(() => delete activePowerUps.explodingBoss, 45000);
+          break;
+          
+        case 'huntingBoss': 
+          activePowerUps.huntingBoss = { active: true };
+          activePowerUps.huntingBoss.timeoutId = setTimeout(() => delete activePowerUps.huntingBoss, 60000);
+          break;
+      }
+    }
+
+    // --- Game Flow & State ---
+    function updateSpawnRate() {
+      const scoreThreshold = Math.floor(score / 50);
+      let newSpawnRate = 240 - (scoreThreshold * 20);
+
+      if (score >= 200) {
+        const tiersAfter200 = Math.floor((score - 200) / 100);
+        newSpawnRate -= tiersAfter200 * 15; 
+      }
+
+      if (score >= 400) { 
+        const tiersAfter400 = Math.floor((score - 400) / 150); 
+        newSpawnRate -= tiersAfter400 * 10; 
+      }
+      
+      enemySpawnRate = Math.max(20, newSpawnRate); // New minimum spawn rate
+    }
+
+    function checkGameOver() {
+      if (gameOver) return; 
+      const visibleLetters = letters.filter(letter => !letter.classList.contains('destroyed') && !letter.classList.contains('space'));
+      if (visibleLetters.length === 0) {
+        // console.log("Game Over - All letters destroyed"); 
+        gameOver = true;
+        if(finalScoreEl) finalScoreEl.textContent = score;
+        if(gameOverOverlay) gameOverOverlay.style.display = 'flex';
+        enemySpawnTimer = 0; 
+        powerUpSpawnTimer = 0; 
+      }
+    }
+    
+    function resetGame() {
+      // console.log(">>> resetGame(): START"); 
+      gameOver = false; score = 0; enemySpawnRate = 240; enemySpawnTimer = 0;
+      if(scoreEl) scoreEl.textContent = 'Score: 0';
+      
+      enemies.forEach(enemy => {if (enemy.element) enemy.element.remove()}); 
+      enemies = [];
+      
+      powerUps.forEach(powerUp => {if (powerUp.element) powerUp.element.remove()}); 
+      powerUps = [];
+      powerUpSpawnTimer = 0; 
+      
+      for (const key in activePowerUps) {
+        if (activePowerUps[key] && activePowerUps[key].timeoutId) {
+          clearTimeout(activePowerUps[key].timeoutId);
+        }
+      }
+      activePowerUps = {};
+      
+      letters.forEach(letter => {
+        letter.classList.remove('destroyed', 'letter-hit'); 
+        letter.style.transition = ''; 
+        letter.style.transform = ''; 
+        letter.dataset.knocked = 'false';
+        letter.dataset.isBeingDestroyed = 'false'; 
+        letter.style.opacity = '1'; 
+        letter.style.display = ''; 
+      });
+      
+      keysPressed.clear(); velocity.x = 0; velocity.y = 0;
+      maxSpeed = 9; // Reset to new default maxSpeed
+      currentSpeed = baseSpeed; // Reset to new default baseSpeed
+      accelerationTimer = 0; 
+      particleSpawnTimer = 0; 
+      isMouseMoving = false; mouseMovementTimer = 0; mouseVelocity.x = 0; mouseVelocity.y = 0;
+      isTouching = false;
+      
+      if (car) {
+        carPos.x = 20; carPos.y = window.innerHeight - 70;
+        car.style.left = carPos.x + 'px'; car.style.top = carPos.y + 'px';
+        car.className = ''; 
+      }
+      
+      if(gameOverOverlay) gameOverOverlay.style.display = 'none';
+      // console.log("<<< resetGame(): COMPLETE"); 
+    }
+
+    function startFunMode(triggeredBy = "Unknown") {
+      // console.log(`>>> startFunMode(): START (Triggered by: ${triggeredBy})`);
+      funModeOn = true;
+      if(funModeBtn) funModeBtn.textContent = 'Exit Fun Mode';
+      if(gameUI) gameUI.style.display = 'block'; 
+      if(car) car.style.display = 'block'; 
+      
+      resetGame(); 
+      
+      // update.callCount = 0; 
+      
+      if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null; 
+      }
+      animationFrameId = requestAnimationFrame(update);
+      // console.log(`<<< startFunMode(): COMPLETE. New animationFrameId: ${animationFrameId}`);
+    }
+
+    // --- Car Movement ---
+    function updateVelocity() { 
+        let dirX = 0; let dirY = 0; let usingKeyboard = false;
+        if (keysPressed.has('ArrowLeft')) { dirX -= 1; usingKeyboard = true; }
+        if (keysPressed.has('ArrowRight')) { dirX += 1; usingKeyboard = true; }
+        if (keysPressed.has('ArrowUp')) { dirY -= 1; usingKeyboard = true; }
+        if (keysPressed.has('ArrowDown')) { dirY += 1; usingKeyboard = true; }
+        
+        if (!usingKeyboard && car) { 
+            const carRect = car.getBoundingClientRect();
+            const carCenterX = carRect.left + carRect.width / 2; 
+            const carCenterY = carRect.top + carRect.height / 2;
+            let targetX, targetY;
+            if (isTouching) { targetX = touchCurrentPos.x; targetY = touchCurrentPos.y; }
+            else if (isMouseMoving && mouseMovementTimer > 0) { targetX = mousePos.x; targetY = mousePos.y; }
+            
+            if (targetX !== undefined && targetY !== undefined) {
+                const dx = targetX - carCenterX; const dy = targetY - carCenterY; const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance > 10) {
+                    dirX = dx / distance; dirY = dy / distance;
+                    const speedScale = Math.min(distance / 100, 1); dirX *= speedScale; dirY *= speedScale;
+                    if (!isTouching) { mouseVelocity.x = dirX; mouseVelocity.y = dirY; }
+                }
+            }
+            if (!isTouching) {
+                const momentumMagnitude = Math.sqrt(mouseVelocity.x * mouseVelocity.x + mouseVelocity.y * mouseVelocity.y);
+                if (momentumMagnitude > minMomentum) {
+                    if (!isMouseMoving || mouseMovementTimer <= 0) { dirX = mouseVelocity.x; dirY = mouseVelocity.y; }
+                    mouseVelocity.x *= mouseMomentumDecay; mouseVelocity.y *= mouseMomentumDecay;
+                } else { mouseVelocity.x = 0; mouseVelocity.y = 0; }
+            }
+        } else if (usingKeyboard) { 
+             mouseVelocity.x = 0; mouseVelocity.y = 0; 
+        }
+
+        if (usingKeyboard && dirX !== 0 && dirY !== 0) { const magnitude = Math.sqrt(dirX*dirX + dirY*dirY); dirX /= magnitude; dirY /= magnitude; }
+        velocity.x = dirX * currentSpeed; velocity.y = dirY * currentSpeed;
+        
+        if (dirX !== 0 || dirY !== 0) {
+            accelerationTimer++;
+            if (accelerationTimer >= accelerationThreshold) {
+                if (currentSpeed < maxSpeed) { currentSpeed = Math.min(maxSpeed, currentSpeed + 0.1); }
+            }
+        } else { accelerationTimer = 0; currentSpeed = baseSpeed; }
+    }
+    
+    // --- Main Game Loop ---
+    function update() {
+      if (!funModeOn || gameOver) {
+          if (gameOver && animationFrameId) { 
+              cancelAnimationFrame(animationFrameId);
+              animationFrameId = null;
+          }
+          return;
+      }
+
+      if (isMouseMoving) { mouseMovementTimer--; if (mouseMovementTimer <= 0) { isMouseMoving = false; } }
+      
+      updateVelocity();
+      
+      if (car) { 
+        carPos.x += velocity.x; carPos.y += velocity.y;
+        carPos.x = Math.max(0, Math.min(window.innerWidth - car.offsetWidth, carPos.x));
+        carPos.y = Math.max(0, Math.min(window.innerHeight - car.offsetHeight, carPos.y));
+        car.style.left = carPos.x + 'px'; car.style.top = carPos.y + 'px';
+
+        if (currentSpeed >= baseSpeed * 1.5 && (velocity.x !== 0 || velocity.y !== 0)) { 
+            particleSpawnTimer++; 
+            if (particleSpawnTimer >= 4) { 
+                createParticle(); 
+                particleSpawnTimer = 0; 
+            }
+        } else { 
+            particleSpawnTimer = 0; 
+        }
+      }
+
+      updateEnemies(); 
+      checkEnemyCollisions(); 
+      updatePowerUps(); 
+      checkPowerUpCollisions(); 
+      checkLetterCollisions(); 
+
+      if (!gameOver) { 
+        enemySpawnTimer++;
+        if (enemySpawnTimer >= enemySpawnRate) { createEnemy(); enemySpawnTimer = 0; }
+
+        powerUpSpawnTimer++;
+        if (powerUpSpawnTimer >= powerUpSpawnRate) {
+          createPowerUp();
+          powerUpSpawnTimer = 0;
+        }
+      }
+      
+      cleanupMarkedEntities(); 
+      checkGameOver(); 
+      
+      animationFrameId = requestAnimationFrame(update);
+    }
+
+    // --- Event Listeners ---
+    if(restartBtn) restartBtn.addEventListener('click', () => startFunMode("Restart Button")); 
+    if(readyBtn) readyBtn.addEventListener('click', () => { 
+        if(instructionsOverlay) instructionsOverlay.style.display = 'none'; 
+        startFunMode("Ready Button"); 
+    });
+    if(funModeBtn) funModeBtn.addEventListener('click', () => {
+      if (!funModeOn) { 
+        if(instructionsOverlay) instructionsOverlay.style.display = 'flex'; 
+      } 
+      else {
+        funModeBtn.textContent = 'Enter Fun Mode'; 
+        if(gameUI) gameUI.style.display = 'none'; 
+        if(gameOverOverlay) gameOverOverlay.style.display = 'none'; 
+        if(car) car.style.display = 'none'; 
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId); 
+            animationFrameId = null; 
+        }
+        resetGame(); 
+        funModeOn = false; 
       }
     });
-  });
 
-  animationFrameId = requestAnimationFrame(update);
-}
+    window.addEventListener('touchstart', (e) => { if (!funModeOn) return; e.preventDefault(); const touch = e.touches[0]; touchStartPos.x = touch.clientX; touchStartPos.y = touch.clientY; touchCurrentPos.x = touch.clientX; touchCurrentPos.y = touch.clientY; isTouching = true; }, { passive: false });
+    window.addEventListener('touchmove', (e) => { if (!funModeOn || !isTouching) return; e.preventDefault(); const touch = e.touches[0]; touchCurrentPos.x = touch.clientX; touchCurrentPos.y = touch.clientY; }, { passive: false });
+    window.addEventListener('touchend', (e) => { if (!funModeOn) return; e.preventDefault(); isTouching = false; }, { passive: false });
+    window.addEventListener('mousemove', (e) => { if (!funModeOn) return; lastMousePos.x = mousePos.x; lastMousePos.y = mousePos.y; mousePos.x = e.clientX; mousePos.y = e.clientY; isMouseMoving = true; mouseMovementTimer = 30; });
+    window.addEventListener('mouseenter', (e) => { if (!funModeOn) return; mousePos.x = e.clientX; mousePos.y = e.clientY; });
+    window.addEventListener('keydown', (e) => { if (!funModeOn || !directions[e.key]) return; e.preventDefault(); keysPressed.add(e.key); });
+    window.addEventListener('keyup', (e) => { if (!funModeOn || !directions[e.key]) return; e.preventDefault(); keysPressed.delete(e.key); });
+    window.addEventListener('resize', () => {
+      if (car && car.style.display !== 'none') { 
+        carPos.x = Math.min(carPos.x, window.innerWidth - car.offsetWidth);
+        carPos.y = Math.min(carPos.y, window.innerHeight - car.offsetHeight);
+        car.style.left = carPos.x + 'px';
+        car.style.top = carPos.y + 'px';
+      }
+    });
 
-// Touch event listeners
-window.addEventListener('touchstart', (e) => {
-  if (!funModeOn) return;
-  e.preventDefault();
-  
-  const touch = e.touches[0];
-  touchStartPos.x = touch.clientX;
-  touchStartPos.y = touch.clientY;
-  touchCurrentPos.x = touch.clientX;
-  touchCurrentPos.y = touch.clientY;
-  isTouching = true;
-}, { passive: false });
-
-window.addEventListener('touchmove', (e) => {
-  if (!funModeOn || !isTouching) return;
-  e.preventDefault();
-  
-  const touch = e.touches[0];
-  touchCurrentPos.x = touch.clientX;
-  touchCurrentPos.y = touch.clientY;
-}, { passive: false });
-
-window.addEventListener('touchend', (e) => {
-  if (!funModeOn) return;
-  e.preventDefault();
-  
-  isTouching = false;
-}, { passive: false });
-
-// Mouse event listeners with momentum tracking
-window.addEventListener('mousemove', (e) => {
-  if (!funModeOn) return;
-  
-  // Store last position for momentum calculation
-  lastMousePos.x = mousePos.x;
-  lastMousePos.y = mousePos.y;
-  
-  mousePos.x = e.clientX;
-  mousePos.y = e.clientY;
-  isMouseMoving = true;
-  mouseMovementTimer = 30; // Reset timer (0.5 seconds at 60fps)
-});
-
-window.addEventListener('mouseenter', (e) => {
-  if (!funModeOn) return;
-  
-  mousePos.x = e.clientX;
-  mousePos.y = e.clientY;
-});
-
-// Keyboard event listeners for movement
-window.addEventListener('keydown', (e) => {
-  if (!funModeOn) return;
-  if (!directions[e.key]) return;
-  e.preventDefault();
-  
-  keysPressed.add(e.key);
-});
-
-window.addEventListener('keyup', (e) => {
-  if (!funModeOn) return;
-  if (!directions[e.key]) return;
-  e.preventDefault();
-  
-  keysPressed.delete(e.key);
-});
-
-// Restart button event listener
-restartBtn.addEventListener('click', () => {
-  resetGame();
-});
-
-// Ready button closes instructions and starts game
-readyBtn.addEventListener('click', () => {
-  instructionsOverlay.style.display = 'none';
-  startFunMode(); // Start the actual game
-});
-
-// Modified Toggle Fun Mode button - now shows instructions first
-funModeBtn.addEventListener('click', () => {
-  if (!funModeOn) {
-    // Show instructions first instead of starting game immediately
-    instructionsOverlay.style.display = 'flex';
-  } else {
-    // Exit fun mode
-    funModeBtn.textContent = 'Enter Fun Mode';
-    gameUI.style.display = 'none'; // Hide game UI
-    gameOverOverlay.style.display = 'none'; // Hide game over screen
-    car.style.display = 'none'; // Hide the car
-    cancelAnimationFrame(animationFrameId);
-    resetGame(); // Reset everything when exiting
-    funModeOn = false; // Make sure this is set to false
-  }
-});
-
-// Update car position on window resize to keep it on screen
-window.addEventListener('resize', () => {
-  carPos.x = Math.min(carPos.x, window.innerWidth - car.offsetWidth);
-  carPos.y = Math.min(carPos.y, window.innerHeight - car.offsetHeight);
-});
+    // console.log("Portfolio Defender Script Loaded and Parsed.");
   </script>
 
 </body>
