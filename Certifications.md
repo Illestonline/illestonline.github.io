@@ -6,12 +6,15 @@ A record of my completed and in-progress courses, certificates, and achievements
 
 ## 📅 2025
 
-### 🔐 NCFE Level 3 Certificate in Cyber Security *(In Progress)*  
+### ✅ NCFE Level 3 Certificate in Cyber Security *(Passed awaiting certificate)*  
 **Topics:** Security, identity, confidentiality, integrity, availability, threats, vulnerabilities, risk, cyber protection strategies
 
 ### 🌐 Cisco Networking – Skills for All  
 - ✅ **Getting Started with Cisco Packet Tracer**  
-- 🟡 **Introduction to Networking** *(In Progress)*
+- ✅ **CISCO Networking Basics** * Passed * view certificate below
+ <p align="left">
+      <img src="_certificate_ianryansmith-gmail-com_0473c10c-57d3-4212-bd60-aee68a23737e.pdf" alt="Cisco Networking Basics Certificate" width="150"/>
+ </p>
 
 ### 🐍 Alison – Python for Beginners  
 - ✅ **Python for Beginners** – Fundamentals of Python programming, syntax, data types, and basic scripting
